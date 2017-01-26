@@ -74,7 +74,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         @BindColor(R.color.redpink) int redColour;
         @BindColor(R.color.orange) int orangeColour;
         @BindColor(R.color.green) int greenColour;
-        @BindColor(R.color.blue) int blueColour;
+        @BindColor(R.color.white) int whiteColour;
 
         public DashboardCalendarViewHolder(View itemView) {
             super(itemView);
@@ -126,9 +126,9 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             }
 
             dashboardCalendarView.removeDecorators();
-            dashboardCalendarView.addDecorator(new EntriesDecorator(redColour, unstartedDays));
-            dashboardCalendarView.addDecorator(new EntriesDecorator(orangeColour, incompleteDays));
-            dashboardCalendarView.addDecorator(new EntriesDecorator(greenColour, completeDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, redColour, unstartedDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, orangeColour, incompleteDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, greenColour, completeDays));
         }
 
         @Override

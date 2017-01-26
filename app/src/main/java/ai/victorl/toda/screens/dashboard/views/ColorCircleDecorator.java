@@ -3,6 +3,7 @@ package ai.victorl.toda.screens.dashboard.views;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.text.style.ForegroundColorSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -12,12 +13,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-class EntriesDecorator implements DayViewDecorator {
-    private final int color;
+class ColorCircleDecorator implements DayViewDecorator {
+    private final int foregroundColour;
+    private final int backgroundColour;
     private final Set<CalendarDay> days;
 
-    EntriesDecorator(int color, Collection<CalendarDay> days) {
-        this.color = color;
+    ColorCircleDecorator(int foregroundColour, int backgroundColour, Collection<CalendarDay> days) {
+        this.foregroundColour = foregroundColour;
+        this.backgroundColour = backgroundColour;
         this.days = new HashSet<>(days);
     }
 
@@ -30,8 +33,9 @@ class EntriesDecorator implements DayViewDecorator {
     public void decorate(DayViewFacade view) {
         if (!view.areDaysDisabled()) {
             ShapeDrawable circleDrawable = new ShapeDrawable(new OvalShape());
-            circleDrawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP );
+            circleDrawable.setColorFilter(backgroundColour, PorterDuff.Mode.SRC_ATOP );
             view.setBackgroundDrawable(circleDrawable);
+            view.addSpan(new ForegroundColorSpan(foregroundColour));
         }
     }
 }
