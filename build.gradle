@@ -42,4 +42,5 @@ ext {
     butterKnifeVersion = '8.4.0'
     sqlbriteVersion = '0.7.0'
     hawkVersion = '2.0.1'
+    materialCalendarViewVersion = '1.4.2'
 }
