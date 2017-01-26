@@ -5,9 +5,8 @@
                                                  android:id="@+id/main_content"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:background="@color/white"
                                                  android:fitsSystemWindows="true"
-                                                 tools:context="ai.victorl.toda.screens.addeditentry.AddEditEntryActivity">
+                                                 tools:context="ai.victorl.toda.screens.dashboard.DashboardActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -19,14 +18,16 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary">
+            android:background="?attr/colorPrimary"
+            android:theme="@style/AppTheme.Toolbar"
+            app:popupTheme="@style/AppTheme.Popup">
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/entry_recyclerview"
+        android:id="@+id/dashboard_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="?attr/actionBarSize"/>

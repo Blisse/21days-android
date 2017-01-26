@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                     style="@style/AppCardView"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/entry_kindnes_header_textview"
+            android:id="@+id/dashboard_calendar_header_textview"
             style="@style/AppCardView.HeaderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meditation"
+            android:text="Calendar"
             android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
-        <EditText
-            android:id="@+id/entry_meditation_edittext"
-            style="@style/AppCardView.EditText"
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/dashboard_mcv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Test"/>
+            app:mcv_allowClickDaysOutsideCurrentMonth="false"
+            app:mcv_selectionColor="@color/darkgray"
+            app:mcv_showOtherDates="decorated_disabled"/>
 
-    </LinearLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </android.support.v7.widget.CardView>

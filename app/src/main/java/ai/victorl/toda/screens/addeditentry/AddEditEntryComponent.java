@@ -1,10 +1,10 @@
-package ai.victorl.toda.screens.entry;
+package ai.victorl.toda.screens.addeditentry;
 
 import ai.victorl.toda.data.DataComponent;
-import ai.victorl.toda.utils.di.FragmentScope;
+import ai.victorl.toda.utils.di.ActivityScope;
 import dagger.Component;
 
-@FragmentScope
+@ActivityScope
 @Component(
         dependencies = {
                 DataComponent.class,
@@ -13,6 +13,6 @@ import dagger.Component;
                 AddEditEntryModule.class,
         }
 )
-public interface AddEditEntryComponent extends AddEditEntryModule.Graph {
+interface AddEditEntryComponent extends AddEditEntryModule.Graph {
     void inject(AddEditEntryActivity target);
 }

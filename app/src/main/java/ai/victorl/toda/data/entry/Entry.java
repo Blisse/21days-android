@@ -2,13 +2,12 @@ package ai.victorl.toda.data.entry;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Objects;
+import com.google.common.primitives.Doubles;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Immutable model class for an Entry.
@@ -16,29 +15,19 @@ import java.util.UUID;
 public class Entry {
     private static final int MIN_ENTRY_LENGTH = 5;
 
-    @NonNull
-    public final String date;
+    public String date;
 
-    @NonNull
-    public final String id;
+    public String journal;
 
-    @NonNull
-    public final String journal;
+    public List<String> gratitudes;
 
-    @NonNull
-    public final List<String> gratitudes;
+    public String exercise;
 
-    @NonNull
-    public final String exercise;
+    public String meditation;
 
-    @NonNull
-    public final String meditation;
+    public String kindness;
 
-    @NonNull
-    public final String kindness;
-
-    private Entry(UUID id, String date, String journal, List<String> gratitudes, String exercise, String meditation, String kindness) {
-        this.id = id.toString();
+    private Entry(@NonNull String date, @NonNull String journal, @NonNull List<String> gratitudes, @NonNull String exercise, @NonNull String meditation, @NonNull String kindness) {
         this.date = date;
         this.journal = journal;
         this.gratitudes = new ArrayList<>(gratitudes);
@@ -47,24 +36,35 @@ public class Entry {
         this.kindness = kindness;
     }
 
-    public Entry(Entry entry) {
-        this(UUID.randomUUID(), entry.date, entry.journal, entry.gratitudes, entry.exercise, entry.meditation, entry.kindness);
+    public Entry(@NonNull String date) {
+        this(date, "", new ArrayList<String>(), "", "", "");
+    }
+
+    public Entry(@NonNull Entry entry) {
+        this(entry.date, entry.journal, entry.gratitudes, entry.exercise, entry.meditation, entry.kindness);
     }
 
     public Entry() {
-        this(UUID.randomUUID(), "", "", new ArrayList<String>(), "", "", "");
+        this("");
     }
 
-    public boolean isComplete() {
-        for (String gratitude : gratitudes) {
-            if (gratitude.length() <= MIN_ENTRY_LENGTH) {
-                return false;
-            }
+    public long percentageComplete() {
+        Double status = 0.0;
+        Double maxSinglePercentage = 20.0;
+        status += Doubles.min(journal.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
+        status += Doubles.min(exercise.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
+        status += Doubles.min(meditation.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
+        status += Doubles.min(kindness.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
+
+        Double gratitudePercentage = 0.0;
+        Double maxSingleGratitude = 6.6667;
+        for (String gratitude: gratitudes) {
+            gratitudePercentage += Doubles.min(gratitude.length()*maxSingleGratitude/MIN_ENTRY_LENGTH, maxSingleGratitude);
         }
-        return journal.length() > MIN_ENTRY_LENGTH
-                && exercise.length() > MIN_ENTRY_LENGTH
-                && meditation.length() > MIN_ENTRY_LENGTH
-                && kindness.length() > MIN_ENTRY_LENGTH;
+
+        status += Doubles.min(gratitudePercentage, maxSinglePercentage);
+
+        return Math.round(status);
     }
 
     @Override
@@ -72,8 +72,7 @@ public class Entry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Entry e = (Entry) o;
-        return this.id.equals(e.id)
-                && this.date.equals(e.date)
+        return this.date.equals(e.date)
                 && this.journal.equals(e.journal)
                 && this.gratitudes.equals(e.gratitudes)
                 && this.meditation.equals(e.meditation)
@@ -83,12 +82,11 @@ public class Entry {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(date, journal, gratitudes, meditation, exercise, kindness);
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "Entry for date %s.", date);
+        return String.format(Locale.CANADA, "Entry for date %s.", date);
     }
-
 }

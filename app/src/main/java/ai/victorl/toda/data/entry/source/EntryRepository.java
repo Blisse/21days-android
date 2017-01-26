@@ -3,6 +3,7 @@ package ai.victorl.toda.data.entry.source;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,16 +21,20 @@ public class EntryRepository implements EntryDataSource {
         this.localKeyStore = localKeyStore;
     }
 
+    private Map<String, Entry> getEntries() {
+        return localKeyStore.get(KEY_ENTRIES, new HashMap<String, Entry>());
+    }
+
     @Override
     public Observable<List<Entry>> getAllEntries() {
-        Map<String, Entry> entries = localKeyStore.get(KEY_ENTRIES);
+        Map<String, Entry> entries = getEntries();
         List<Entry> entriesList = new ArrayList<>(entries.values());
         return Observable.just(entriesList);
     }
 
     @Override
     public Observable<Entry> getEntry(@NonNull final String entryDate) {
-        Map<String, Entry> entries = localKeyStore.get(KEY_ENTRIES);
+        Map<String, Entry> entries = getEntries();
         if (entries.containsKey(entryDate)) {
             return Observable.just(entries.get(entryDate));
         }
@@ -38,7 +43,7 @@ public class EntryRepository implements EntryDataSource {
 
     @Override
     public void saveEntry(@NonNull Entry entry) {
-        Map<String, Entry> entries = localKeyStore.get(KEY_ENTRIES);
+        Map<String, Entry> entries = getEntries();
         entries.put(entry.date, entry);
         localKeyStore.put(KEY_ENTRIES, entries);
     }
@@ -50,7 +55,7 @@ public class EntryRepository implements EntryDataSource {
 
     @Override
     public void deleteEntry(@NonNull String entryDate) {
-        Map<String, Entry> entries = localKeyStore.get(KEY_ENTRIES);
+        Map<String, Entry> entries = getEntries();
         entries.remove(entryDate);
         localKeyStore.put(KEY_ENTRIES, entries);
     }

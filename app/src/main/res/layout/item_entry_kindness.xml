@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    style="@style/AddEditCardView"
+                                    style="@style/AppCardView"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/entry_kindness_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Test"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/entry_kindnes_header_textview"
+            style="@style/AppCardView.HeaderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Random Act of Kindness"
+            android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
+
+        <EditText
+            android:id="@+id/entry_kindness_edittext"
+            style="@style/AppCardView.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Test"/>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
