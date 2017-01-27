@@ -58,6 +58,16 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
     }
 
     @Override
+    public void onViewAttachedToWindow(EntryGratitudeViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(EntryGratitudeViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public void onBindViewHolder(EntryGratitudeViewHolder holder, int position) {
         holder.onBind(listener, gratitudes, position);
     }

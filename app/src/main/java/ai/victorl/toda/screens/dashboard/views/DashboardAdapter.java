@@ -113,7 +113,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             List<CalendarDay> completeDays = new ArrayList<>();
 
             for (Map.Entry<Entry, CalendarDay> entryDay: entryDays.entrySet()) {
-                long percentageComplete = entryDay.getKey().percentageComplete();
+                long percentageComplete = entryDay.getKey().getPercentageComplete();
                 CalendarDay day = entryDay.getValue();
                 if (day != null) {
                     if (percentageComplete < 20) {

@@ -3,7 +3,6 @@ package ai.victorl.toda.data.entry;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
-import com.google.common.primitives.Doubles;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,23 +48,43 @@ public class Entry {
         this("");
     }
 
-    public long percentageComplete() {
-        Double status = 0.0;
-        Double maxSinglePercentage = 20.0;
-        status += Doubles.min(journal.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
-        status += Doubles.min(exercise.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
-        status += Doubles.min(meditation.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
-        status += Doubles.min(kindness.length()*maxSinglePercentage/MIN_ENTRY_LENGTH, maxSinglePercentage);
+    public Integer getJournalComplete() {
+        return Math.min(100, (journal.length()*100) / MIN_ENTRY_LENGTH);
+    }
 
-        Double gratitudePercentage = 0.0;
-        Double maxSingleGratitude = 6.6667;
+    public Integer getGratitudesComplete() {
+        Integer gratitudeComplete = 0;
+
         for (String gratitude: gratitudes) {
-            gratitudePercentage += Doubles.min(gratitude.length()*maxSingleGratitude/MIN_ENTRY_LENGTH, maxSingleGratitude);
+            gratitudeComplete += Math.max(100, (gratitude.length()*100) / MIN_ENTRY_LENGTH);
         }
 
-        status += Doubles.min(gratitudePercentage, maxSinglePercentage);
+        return Math.min(100, Long.valueOf(Math.round(gratitudeComplete / 3.0)).intValue());
+    }
 
-        return Math.round(status);
+    public Integer getExerciseComplete() {
+        return Math.min(100, (meditation.length()*100) / MIN_ENTRY_LENGTH);
+    }
+
+    public Integer getMeditationComplete() {
+        return Math.min(100, (meditation.length()*100) / MIN_ENTRY_LENGTH);
+    }
+
+    public Integer getKindnessComplete() {
+        return Math.min(100, (kindness.length()*100) / MIN_ENTRY_LENGTH);
+    }
+
+    public Integer getPercentageComplete() {
+        Integer complete = 0;
+
+        complete += getJournalComplete();
+        complete += getGratitudesComplete();
+        complete += getExerciseComplete();
+        complete += getMeditationComplete();
+        complete += getKindnessComplete();
+        complete /= 5;
+
+        return complete;
     }
 
     @Override
