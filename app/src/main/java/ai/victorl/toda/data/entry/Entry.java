@@ -6,6 +6,7 @@ import com.google.common.base.Objects;
 import com.google.common.primitives.Doubles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,7 +38,7 @@ public class Entry {
     }
 
     public Entry(@NonNull String date) {
-        this(date, "", new ArrayList<String>(), "", "", "");
+        this(date, "", Arrays.asList("", "", ""), "", "", "");
     }
 
     public Entry(@NonNull Entry entry) {
