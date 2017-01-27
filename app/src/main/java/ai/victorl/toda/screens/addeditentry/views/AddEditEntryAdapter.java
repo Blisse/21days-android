@@ -90,7 +90,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryJournalViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.entry_journal_edittext) EditText journalEditText;
+        @BindView(R.id.edittext) EditText journalEditText;
 
         public EntryJournalViewHolder(View itemView) {
             super(itemView);
@@ -111,9 +111,9 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryGratitudesViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.entry_gratitudes_add_imageview) ImageView addGratitudeImageView;
-        @BindView(R.id.entry_gratitudes_remove_imageview) ImageView removeGratitudeImageView;
-        @BindView(R.id.entry_gratitudes_recyclerview) RecyclerView gratitudesRecyclerView;
+        @BindView(R.id.add_imageview) ImageView addGratitudeImageView;
+        @BindView(R.id.remove_imageview) ImageView removeGratitudeImageView;
+        @BindView(R.id.recyclerview) RecyclerView gratitudesRecyclerView;
 
         private EntryGratitudesAdapter gratitudesAdapter;
 
@@ -144,7 +144,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryExerciseViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.entry_exercise_edittext) EditText exerciseEditText;
+        @BindView(R.id.edittext) EditText exerciseEditText;
 
         public EntryExerciseViewHolder(View itemView) {
             super(itemView);
@@ -165,7 +165,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryMeditationViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.entry_meditation_edittext) EditText meditationEditText;
+        @BindView(R.id.edittext) EditText meditationEditText;
 
         public EntryMeditationViewHolder(View itemView) {
             super(itemView);
@@ -186,7 +186,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryKindnessViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.entry_kindness_edittext) EditText kindnessEditText;
+        @BindView(R.id.edittext) EditText kindnessEditText;
 
         public EntryKindnessViewHolder(View itemView) {
             super(itemView);

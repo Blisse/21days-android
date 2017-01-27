@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/header_linearlayout"
             style="@style/AppCardView.HeaderLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,7 +24,7 @@
                 android:tint="@color/white"/>
 
             <TextView
-                android:id="@+id/entry_gratitudes_header_textview"
+                android:id="@+id/header_textview"
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
                 android:layout_weight="1"/>
 
             <ImageView
-                android:id="@+id/entry_gratitudes_add_imageview"
+                android:id="@+id/add_imageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
@@ -45,7 +46,7 @@
                 android:tint="@color/white"/>
 
             <ImageView
-                android:id="@+id/entry_gratitudes_remove_imageview"
+                android:id="@+id/remove_imageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
@@ -55,7 +56,7 @@
         </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/entry_gratitudes_recyclerview"
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

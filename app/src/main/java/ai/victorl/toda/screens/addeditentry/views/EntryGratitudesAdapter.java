@@ -79,7 +79,7 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
 
     static class EntryGratitudeViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.entry_gratitude_edittext) EditText gratitudeEditText;
+        @BindView(R.id.edittext) EditText gratitudeEditText;
 
         EntryGratitudeViewHolder(View itemView) {
             super(itemView);

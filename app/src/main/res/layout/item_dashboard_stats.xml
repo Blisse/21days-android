@@ -23,7 +23,6 @@
                 android:tint="@color/white"/>
 
             <TextView
-                android:id="@+id/dashboard_calendar_header_textview"
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

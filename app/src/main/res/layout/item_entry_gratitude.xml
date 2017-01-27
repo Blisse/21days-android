@@ -5,7 +5,7 @@
                                               android:orientation="vertical">
 
     <EditText
-        android:id="@+id/entry_gratitude_edittext"
+        android:id="@+id/edittext"
         style="@style/AppCardView.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

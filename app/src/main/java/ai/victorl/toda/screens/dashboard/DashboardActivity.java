@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.dashboard_recyclerview) RecyclerView dashboardRecyclerView;
+    @BindView(R.id.recyclerview) RecyclerView dashboardRecyclerView;
 
     @Inject DashboardContract.Presenter dashboardPresenter;
 

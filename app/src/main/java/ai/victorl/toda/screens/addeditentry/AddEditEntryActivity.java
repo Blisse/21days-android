@@ -29,7 +29,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     public static final String KEY_ENTRY_DATE = "ai.victorl.toda.addeditentry.ENTRY_DATE";
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.entry_recyclerview) RecyclerView entryRecyclerView;
+    @BindView(R.id.recyclerview) RecyclerView entryRecyclerView;
 
     @OnClick(R.id.fab)
     void onFabClick() {

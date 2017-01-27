@@ -11,6 +11,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/header_linearlayout"
             style="@style/AppCardView.HeaderLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +25,7 @@
                 android:tint="@color/white"/>
 
             <TextView
-                android:id="@+id/entry_kindnes_header_textview"
+                android:id="@+id/header_textview"
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
         </android.support.v7.widget.LinearLayoutCompat>
 
         <EditText
-            android:id="@+id/entry_meditation_edittext"
+            android:id="@+id/edittext"
             style="@style/AppCardView.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

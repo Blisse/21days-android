@@ -23,7 +23,7 @@
                 android:tint="@color/white"/>
 
             <TextView
-                android:id="@+id/entry_kindnes_header_textview"
+                android:id="@+id/header_textview"
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         </android.support.v7.widget.LinearLayoutCompat>
 
         <EditText
-            android:id="@+id/entry_exercise_edittext"
+            android:id="@+id/edittext"
             style="@style/AppCardView.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
