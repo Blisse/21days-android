@@ -9,13 +9,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/entry_kindnes_header_textview"
-            style="@style/AppCardView.HeaderTextView"
+        <android.support.v7.widget.LinearLayoutCompat
+            style="@style/AppCardView.HeaderLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Random Act of Kindness"
-            android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@drawable/ic_mood_black_24dp"
+                android:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/entry_kindnes_header_textview"
+                style="@style/AppCardView.HeaderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Random Act of Kindness"
+                android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
+
+        </android.support.v7.widget.LinearLayoutCompat>
 
         <EditText
             android:id="@+id/entry_kindness_edittext"

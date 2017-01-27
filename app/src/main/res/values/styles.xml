@@ -26,16 +26,23 @@
     <style name="AppCardView" parent="CardView">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
         <item name="cardPreventCornerOverlap">false</item>
         <item name="cardUseCompatPadding">true</item>
     </style>
 
-    <style name="AppCardView.HeaderTextView">
+    <style name="AppCardView.HeaderLinearLayout">
         <item name="android:layout_margin">0dp</item>
         <item name="android:padding">8dp</item>
         <item name="android:background">@color/darkgray</item>
+    </style>
+
+    <style name="AppCardView.HeaderTextView">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
 
     <style name="AppCardView.HeaderTextAppearance">
