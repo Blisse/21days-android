@@ -56,7 +56,7 @@ public class Entry {
         Integer gratitudeComplete = 0;
 
         for (String gratitude: gratitudes) {
-            gratitudeComplete += Math.max(100, (gratitude.length()*100) / MIN_ENTRY_LENGTH);
+            gratitudeComplete += Math.min(100, (gratitude.length()*100) / MIN_ENTRY_LENGTH);
         }
 
         return Math.min(100, Long.valueOf(Math.round(gratitudeComplete / 3.0)).intValue());
