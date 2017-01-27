@@ -21,6 +21,7 @@ import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryActivity;
+import ai.victorl.toda.ui.ColorCircleDecorator;
 import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
 import butterknife.BindColor;

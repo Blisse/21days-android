@@ -1,4 +1,4 @@
-package ai.victorl.toda.screens.dashboard.views;
+package ai.victorl.toda.ui;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ShapeDrawable;
@@ -13,12 +13,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-class ColorCircleDecorator implements DayViewDecorator {
+public class ColorCircleDecorator implements DayViewDecorator {
     private final int foregroundColour;
     private final int backgroundColour;
     private final Set<CalendarDay> days;
 
-    ColorCircleDecorator(int foregroundColour, int backgroundColour, Collection<CalendarDay> days) {
+    public ColorCircleDecorator(int foregroundColour, int backgroundColour, Collection<CalendarDay> days) {
         this.foregroundColour = foregroundColour;
         this.backgroundColour = backgroundColour;
         this.days = new HashSet<>(days);
