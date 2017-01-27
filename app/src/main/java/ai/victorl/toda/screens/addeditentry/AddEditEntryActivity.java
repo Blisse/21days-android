@@ -22,6 +22,7 @@ import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.screens.addeditentry.views.AddEditEntryAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AddEditEntryActivity extends AppCompatActivity implements AddEditEntryContract.View {
 
@@ -29,6 +30,11 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.entry_recyclerview) RecyclerView entryRecyclerView;
+
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        entryPresenter.save();
+    }
 
     @Inject AddEditEntryContract.Presenter entryPresenter;
 

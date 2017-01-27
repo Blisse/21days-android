@@ -1,6 +1,7 @@
 package ai.victorl.toda.screens.addeditentry.views;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,25 +20,34 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
 
     private final List<String> gratitudes = new ArrayList<>();
 
-    private GratitudesChangedListener listener;
+    private final GratitudesChangedListener listener;
+
+    public EntryGratitudesAdapter(GratitudesChangedListener listener) {
+        this.listener = listener;
+    }
 
     public void setGratitudes(Collection<String> gratitudes) {
         this.gratitudes.clear();
         this.gratitudes.addAll(gratitudes);
         notifyDataSetChanged();
+        listener.onGratitudesChanged(this.gratitudes);
     }
 
     public void addGratitude() {
-        this.gratitudes.add("");
-        notifyItemInserted(this.gratitudes.size() - 1);
+        int position = gratitudes.size();
+        this.gratitudes.add(position, "");
+        notifyItemInserted(position);
+        listener.onGratitudesChanged(this.gratitudes);
     }
 
     public List<String> getGratitudes() {
         return gratitudes;
     }
 
-    public void setOnGratitudesChangedListener(GratitudesChangedListener listener) {
-        this.listener = listener;
+    public void removeGratitude(int position) {
+        this.gratitudes.remove(position);
+        notifyItemRemoved(position);
+        listener.onGratitudesChanged(this.gratitudes);
     }
 
     @Override
@@ -71,8 +81,13 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
             gratitudeEditText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    gratitudes.set(position, s.toString());
-                    listener.onGratitudesChanged(gratitudes);
+                    if (position < gratitudes.size()) {
+                        // TODO: Investigate issue where position >= gratitudes.size()
+                        gratitudes.set(position, s.toString());
+                        listener.onGratitudesChanged(gratitudes);
+                    } else {
+                        Log.d("Toda", "gratitudeEditText::onTextChanged: position >= gratitudes.size()");
+                    }
                 }
             });
         }

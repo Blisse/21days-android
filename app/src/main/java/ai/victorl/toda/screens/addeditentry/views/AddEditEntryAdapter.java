@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -110,9 +111,11 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     static class EntryGratitudesViewHolder extends EntryViewHolder {
 
+        @BindView(R.id.entry_gratitudes_add_imageview) ImageView addGratitudeImageView;
+        @BindView(R.id.entry_gratitudes_remove_imageview) ImageView removeGratitudeImageView;
         @BindView(R.id.entry_gratitudes_recyclerview) RecyclerView gratitudesRecyclerView;
 
-        private EntryGratitudesAdapter gratitudesAdapter = new EntryGratitudesAdapter();
+        private EntryGratitudesAdapter gratitudesAdapter;
 
         public EntryGratitudesViewHolder(View itemView) {
             super(itemView);
@@ -121,13 +124,19 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
+            gratitudesAdapter = new EntryGratitudesAdapter(gratitudes -> entry.gratitudes = gratitudes);
+            gratitudesAdapter.setGratitudes(entry.gratitudes);
+
             gratitudesRecyclerView.setLayoutManager(new LinearLayoutManager(gratitudesRecyclerView.getContext()));
             gratitudesRecyclerView.setAdapter(gratitudesAdapter);
-            gratitudesAdapter.setGratitudes(entry.gratitudes);
-            gratitudesAdapter.setOnGratitudesChangedListener(new EntryGratitudesAdapter.GratitudesChangedListener() {
-                @Override
-                public void onGratitudesChanged(List<String> gratitudes) {
-                    entry.gratitudes = gratitudes;
+
+            addGratitudeImageView.setOnClickListener(v -> {
+                gratitudesAdapter.addGratitude();
+            });
+            removeGratitudeImageView.setOnClickListener(v -> {
+                int size = gratitudesAdapter.getItemCount();
+                if ((size > 3) && TextUtils.isEmpty(entry.gratitudes.get(size - 1))) {
+                    gratitudesAdapter.removeGratitude(size - 1);
                 }
             });
         }
