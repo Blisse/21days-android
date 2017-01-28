@@ -58,16 +58,6 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
     }
 
     @Override
-    public void onViewAttachedToWindow(EntryGratitudeViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(EntryGratitudeViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override
     public void onBindViewHolder(EntryGratitudeViewHolder holder, int position) {
         holder.onBind(listener, gratitudes, position);
     }
@@ -96,7 +86,7 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
                         gratitudes.set(position, s.toString());
                         listener.onGratitudesChanged(gratitudes);
                     } else {
-                        Log.d("Toda", "gratitudeEditText::onTextChanged: position >= gratitudes.size()");
+                        Log.d("Toda", String.format("gratitudeEditText::onTextChanged: position[%d] >= gratitudes.size()[%d]", position, gratitudes.size()));
                     }
                 }
             });

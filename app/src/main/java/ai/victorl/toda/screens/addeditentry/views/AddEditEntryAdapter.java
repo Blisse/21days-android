@@ -2,6 +2,7 @@ package ai.victorl.toda.screens.addeditentry.views;
 
 import android.support.annotation.LayoutRes;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,18 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryContract;
+import ai.victorl.toda.ui.EntryChangeViewDecorator;
 import ai.victorl.toda.ui.TextWatcherAdapter;
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -91,6 +96,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
     static class EntryJournalViewHolder extends EntryViewHolder {
 
         @BindView(R.id.edittext) EditText journalEditText;
+        @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryJournalViewHolder(View itemView) {
             super(itemView);
@@ -99,13 +105,15 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
-            journalEditText.setText(entry.journal);
+            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
             journalEditText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     entry.journal = s.toString();
+                    viewDecorator.onEntryChanged(entry.getJournalComplete());
                 }
             });
+            journalEditText.setText(entry.journal);
         }
     }
 
@@ -113,7 +121,9 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @BindView(R.id.add_imageview) ImageView addGratitudeImageView;
         @BindView(R.id.remove_imageview) ImageView removeGratitudeImageView;
+        @BindView(R.id.completion_textview) TextView completionTextView;
         @BindView(R.id.recyclerview) RecyclerView gratitudesRecyclerView;
+        @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         private EntryGratitudesAdapter gratitudesAdapter;
 
@@ -124,7 +134,12 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
-            gratitudesAdapter = new EntryGratitudesAdapter(gratitudes -> entry.gratitudes = gratitudes);
+            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
+            gratitudesAdapter = new EntryGratitudesAdapter(gratitudes -> {
+                entry.gratitudes = gratitudes;
+                completionTextView.setText(String.format(Locale.getDefault(), "%d/3", entry.gratitudes.size()));
+                viewDecorator.onEntryChanged(entry.getGratitudesComplete());
+            });
             gratitudesAdapter.setGratitudes(entry.gratitudes);
 
             gratitudesRecyclerView.setLayoutManager(new LinearLayoutManager(gratitudesRecyclerView.getContext()));
@@ -135,7 +150,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
             });
             removeGratitudeImageView.setOnClickListener(v -> {
                 int size = gratitudesAdapter.getItemCount();
-                if ((size > 3) && TextUtils.isEmpty(entry.gratitudes.get(size - 1))) {
+                if ((size > 0) && TextUtils.isEmpty(entry.gratitudes.get(size - 1))) {
                     gratitudesAdapter.removeGratitude(size - 1);
                 }
             });
@@ -145,6 +160,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
     static class EntryExerciseViewHolder extends EntryViewHolder {
 
         @BindView(R.id.edittext) EditText exerciseEditText;
+        @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryExerciseViewHolder(View itemView) {
             super(itemView);
@@ -153,19 +169,22 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
-            exerciseEditText.setText(entry.exercise);
+            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
             exerciseEditText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     entry.exercise = s.toString();
+                    viewDecorator.onEntryChanged(entry.getExerciseComplete());
                 }
             });
+            exerciseEditText.setText(entry.exercise);
         }
     }
 
     static class EntryMeditationViewHolder extends EntryViewHolder {
 
         @BindView(R.id.edittext) EditText meditationEditText;
+        @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryMeditationViewHolder(View itemView) {
             super(itemView);
@@ -174,19 +193,22 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
-            meditationEditText.setText(entry.meditation);
+            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
             meditationEditText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     entry.meditation = s.toString();
+                    viewDecorator.onEntryChanged(entry.getMeditationComplete());
                 }
             });
+            meditationEditText.setText(entry.meditation);
         }
     }
 
     static class EntryKindnessViewHolder extends EntryViewHolder {
 
         @BindView(R.id.edittext) EditText kindnessEditText;
+        @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryKindnessViewHolder(View itemView) {
             super(itemView);
@@ -195,34 +217,41 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
         @Override
         public void onBind(final Entry entry) {
-            kindnessEditText.setText(entry.kindness);
+            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
             kindnessEditText.addTextChangedListener(new TextWatcherAdapter() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     entry.kindness = s.toString();
+                    viewDecorator.onEntryChanged(entry.getKindnessComplete());
                 }
             });
+            kindnessEditText.setText(entry.kindness);
         }
     }
 
     static abstract class EntryViewHolder extends RecyclerView.ViewHolder {
 
+        @BindColor(R.color.green) int greenColour;
+        @BindColor(R.color.orange) int orangeColour;
+        @BindColor(R.color.darkgray) int darkGrayColour;
+
         EntryViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        private static final Map<Integer, Pair<Class, Integer>> layoutMap = new HashMap<>();
+        private static final Map<Entry.EntryField, Pair<Class, Integer>> layoutMap = new HashMap<>();
 
         static {
-            layoutMap.put(0, Pair.<Class, Integer>create(EntryJournalViewHolder.class, R.layout.item_entry_journal));
-            layoutMap.put(1, Pair.<Class, Integer>create(EntryGratitudesViewHolder.class, R.layout.item_entry_gratitudes));
-            layoutMap.put(2, Pair.<Class, Integer>create(EntryExerciseViewHolder.class, R.layout.item_entry_exercise));
-            layoutMap.put(3, Pair.<Class, Integer>create(EntryMeditationViewHolder.class, R.layout.item_entry_meditation));
-            layoutMap.put(4, Pair.<Class, Integer>create(EntryKindnessViewHolder.class, R.layout.item_entry_kindness));
+            layoutMap.put(Entry.EntryField.JOURNAL, Pair.<Class, Integer>create(EntryJournalViewHolder.class, R.layout.item_entry_journal));
+            layoutMap.put(Entry.EntryField.GRATITUDES, Pair.<Class, Integer>create(EntryGratitudesViewHolder.class, R.layout.item_entry_gratitudes));
+            layoutMap.put(Entry.EntryField.EXERCISE, Pair.<Class, Integer>create(EntryExerciseViewHolder.class, R.layout.item_entry_exercise));
+            layoutMap.put(Entry.EntryField.MEDITATION, Pair.<Class, Integer>create(EntryMeditationViewHolder.class, R.layout.item_entry_meditation));
+            layoutMap.put(Entry.EntryField.KINDNESS, Pair.<Class, Integer>create(EntryKindnessViewHolder.class, R.layout.item_entry_kindness));
         }
 
         public static <T extends EntryViewHolder> EntryViewHolder create(int viewType, LayoutInflater inflater, ViewGroup parent) {
-            Pair<Class, Integer> layout = layoutMap.get(viewType);
+            Pair<Class, Integer> layout = layoutMap.get(Entry.EntryField.fromValue(viewType));
             return create(layout.first, layout.second, inflater, parent);
         }
 

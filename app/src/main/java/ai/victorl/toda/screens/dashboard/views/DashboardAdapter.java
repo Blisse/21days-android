@@ -72,7 +72,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
     public static class DashboardCalendarViewHolder extends DashboardViewHolder {
 
         @BindView(R.id.dashboard_mcv) MaterialCalendarView dashboardCalendarView;
-        @BindColor(R.color.redpink) int redColour;
+        @BindColor(R.color.red) int redColour;
         @BindColor(R.color.orange) int orangeColour;
         @BindColor(R.color.green) int greenColour;
         @BindColor(R.color.white) int whiteColour;
@@ -98,7 +98,9 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             }
 
             minDate.add(Calendar.MONTH, -1);
+            minDate.set(Calendar.DAY_OF_MONTH, minDate.getActualMinimum(Calendar.DAY_OF_MONTH));
             maxDate.add(Calendar.MONTH, 1);
+            maxDate.set(Calendar.DAY_OF_MONTH, maxDate.getActualMaximum(Calendar.DAY_OF_MONTH));
 
             dashboardCalendarView.state()
                     .edit()

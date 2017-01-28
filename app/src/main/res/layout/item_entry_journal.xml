@@ -38,7 +38,7 @@
             style="@style/AppCardView.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Test"/>
+            android:hint="@string/app_name"/>
 
     </LinearLayout>
 

@@ -13,7 +13,7 @@
         <android.support.v7.widget.LinearLayoutCompat
             style="@style/AppCardView.HeaderLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -32,13 +32,72 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/dashboard_mcv"
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mcv_allowClickDaysOutsideCurrentMonth="false"
-            app:mcv_selectionColor="@color/darkgray"
-            app:mcv_showOtherDates="decorated_disabled"/>
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/dashboard_mcv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_allowClickDaysOutsideCurrentMonth="false"
+                app:mcv_arrowColor="@color/darkgray"
+                app:mcv_selectionColor="@color/darkgray"
+                app:mcv_showOtherDates="decorated_disabled"/>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_circle_black_24dp"
+                    android:tint="@color/green"/>
+
+                <TextView
+                    style="@style/AppCardView.CalendarDescriptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Completed"
+                    android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_circle_black_24dp"
+                    android:tint="@color/orange"/>
+
+                <TextView
+                    style="@style/AppCardView.CalendarDescriptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In Progress"
+                    android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_circle_black_24dp"
+                    android:tint="@color/red"/>
+
+                <TextView
+                    style="@style/AppCardView.CalendarDescriptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unstarted"
+                    android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </android.support.v7.widget.LinearLayoutCompat>
 
     </android.support.v7.widget.LinearLayoutCompat>
 

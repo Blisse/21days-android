@@ -109,4 +109,31 @@ public class Entry {
     public String toString() {
         return String.format(Locale.CANADA, "Entry for date %s.", date);
     }
+
+    public enum EntryField {
+        JOURNAL(0),
+        GRATITUDES(1),
+        EXERCISE(2),
+        MEDITATION(3),
+        KINDNESS(4);
+
+        private final int value;
+        EntryField(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static EntryField fromValue(int value) {
+            for (EntryField field: values()) {
+                if (field.value == value) {
+                    return field;
+                }
+            }
+            throw new IllegalArgumentException(String.format(Locale.getDefault(), "No entry field with value %d exists", value));
+        }
+    };
+
 }
