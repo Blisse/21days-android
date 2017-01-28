@@ -30,6 +30,10 @@ class DashboardPresenter implements DashboardContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dashboardView::showEntries);
+    }
+
+    @Override
+    public void result(int requestCode, int resultCode) {
 
     }
 }

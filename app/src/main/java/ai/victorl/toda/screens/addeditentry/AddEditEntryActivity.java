@@ -1,6 +1,5 @@
 package ai.victorl.toda.screens.addeditentry;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,9 +25,11 @@ import butterknife.OnClick;
 
 public class AddEditEntryActivity extends AppCompatActivity implements AddEditEntryContract.View {
 
-    public static final String KEY_ENTRY_DATE = "ai.victorl.toda.addeditentry.ENTRY_DATE";
+    public static final int REQUEST_ADD_EDIT = 1;
+    private static final String KEY_ENTRY_DATE = "ai.victorl.toda.addeditentry.ENTRY_DATE";
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+
     @BindView(R.id.recyclerview) RecyclerView entryRecyclerView;
 
     @OnClick(R.id.fab)
@@ -100,8 +101,8 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
         }
     }
 
-    public static void start(Context context, @NonNull CalendarDay day) {
-        context.startActivity(new Intent(context, AddEditEntryActivity.class)
-                .putExtra(KEY_ENTRY_DATE, EntryDateFormatter.format(day)));
+    public static void start(AppCompatActivity activity, int requestCode, @NonNull CalendarDay day) {
+        activity.startActivityForResult(new Intent(activity, AddEditEntryActivity.class)
+                .putExtra(KEY_ENTRY_DATE, EntryDateFormatter.format(day)), requestCode);
     }
 }

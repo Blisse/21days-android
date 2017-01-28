@@ -1,5 +1,6 @@
 package ai.victorl.toda.screens.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,6 +18,7 @@ import javax.inject.Inject;
 import ai.victorl.toda.R;
 import ai.victorl.toda.app.TodaApp;
 import ai.victorl.toda.data.entry.Entry;
+import ai.victorl.toda.screens.addeditentry.AddEditEntryActivity;
 import ai.victorl.toda.screens.dashboard.views.DashboardAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,12 +75,26 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
+            case R.id.action_today:
+                dashboardAdapter.refreshCalendar();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        dashboardPresenter.result(requestCode, resultCode);
+    }
+
+    @Override
     public void showEntries(List<Entry> entries) {
         dashboardAdapter.setEntries(entries);
+    }
+
+    @Override
+    public void showAddEditTask(CalendarDay day) {
+        AddEditEntryActivity.start(this, AddEditEntryActivity.REQUEST_ADD_EDIT, day);
     }
 }

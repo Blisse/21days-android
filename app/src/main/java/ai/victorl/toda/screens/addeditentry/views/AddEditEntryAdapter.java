@@ -1,36 +1,40 @@
 package ai.victorl.toda.screens.addeditentry.views;
 
-import android.support.annotation.LayoutRes;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryContract;
 import ai.victorl.toda.ui.EntryChangeViewDecorator;
+import ai.victorl.toda.ui.RecyclerViewHolder;
+import ai.victorl.toda.ui.RecyclerViewHolderLayout;
 import ai.victorl.toda.ui.TextWatcherAdapter;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapter.EntryViewHolder> {
+public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> extends RecyclerView.Adapter<T> {
+
+    private final List<RecyclerViewHolderLayout<T>> addEditEntryViewHolderLayouts = Arrays.asList(
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_journal, (Class<T>) EntryExerciseViewHolder.class),
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_gratitudes, (Class<T>) EntryGratitudesViewHolder.class),
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_exercise, (Class<T>) EntryExerciseViewHolder.class),
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_meditation, (Class<T>) EntryMeditationViewHolder.class),
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_kindness, (Class<T>) EntryKindnessViewHolder.class)
+    );
 
     private final AddEditEntryContract.Presenter entryPresenter;
 
@@ -74,8 +78,8 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
     }
 
     @Override
-    public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return EntryViewHolder.create(viewType, LayoutInflater.from(parent.getContext()), parent);
+    public T onCreateViewHolder(ViewGroup parent, int viewType) {
+        return RecyclerViewHolder.create(addEditEntryViewHolderLayouts.get(viewType), parent.getContext(), parent);
     }
 
     @Override
@@ -90,7 +94,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
 
     @Override
     public int getItemCount() {
-        return entry != null ? 5 : 0;
+        return entry != null ? addEditEntryViewHolderLayouts.size() : 0;
     }
 
     static class EntryJournalViewHolder extends EntryViewHolder {
@@ -229,7 +233,7 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
         }
     }
 
-    static abstract class EntryViewHolder extends RecyclerView.ViewHolder {
+    static abstract class EntryViewHolder extends RecyclerViewHolder {
 
         @BindColor(R.color.green) int greenColour;
         @BindColor(R.color.orange) int orangeColour;
@@ -238,32 +242,6 @@ public class AddEditEntryAdapter extends RecyclerView.Adapter<AddEditEntryAdapte
         EntryViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-
-        private static final Map<Entry.EntryField, Pair<Class, Integer>> layoutMap = new HashMap<>();
-
-        static {
-            layoutMap.put(Entry.EntryField.JOURNAL, Pair.<Class, Integer>create(EntryJournalViewHolder.class, R.layout.item_entry_journal));
-            layoutMap.put(Entry.EntryField.GRATITUDES, Pair.<Class, Integer>create(EntryGratitudesViewHolder.class, R.layout.item_entry_gratitudes));
-            layoutMap.put(Entry.EntryField.EXERCISE, Pair.<Class, Integer>create(EntryExerciseViewHolder.class, R.layout.item_entry_exercise));
-            layoutMap.put(Entry.EntryField.MEDITATION, Pair.<Class, Integer>create(EntryMeditationViewHolder.class, R.layout.item_entry_meditation));
-            layoutMap.put(Entry.EntryField.KINDNESS, Pair.<Class, Integer>create(EntryKindnessViewHolder.class, R.layout.item_entry_kindness));
-        }
-
-        public static <T extends EntryViewHolder> EntryViewHolder create(int viewType, LayoutInflater inflater, ViewGroup parent) {
-            Pair<Class, Integer> layout = layoutMap.get(Entry.EntryField.fromValue(viewType));
-            return create(layout.first, layout.second, inflater, parent);
-        }
-
-        public static <T extends EntryViewHolder> EntryViewHolder create(Class<T> clazz, @LayoutRes int layoutId, LayoutInflater inflater, ViewGroup parent) {
-            try {
-                View root = inflater.inflate(layoutId, parent, false);
-                Constructor<T> ctor = clazz.getConstructor(View.class);
-                return ctor.newInstance(root);
-            } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return null;
         }
 
         public abstract void onBind(Entry entry);

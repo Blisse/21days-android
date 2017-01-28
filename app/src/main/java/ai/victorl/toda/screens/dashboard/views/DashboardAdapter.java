@@ -1,6 +1,5 @@
 package ai.victorl.toda.screens.dashboard.views;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,8 @@ import java.util.Map;
 import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
-import ai.victorl.toda.screens.addeditentry.AddEditEntryActivity;
-import ai.victorl.toda.ui.ColorCircleDecorator;
+import ai.victorl.toda.screens.dashboard.DashboardContract;
+import ai.victorl.toda.ui.ColorCircleDayViewDecorator;
 import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
 import butterknife.BindColor;
@@ -35,10 +33,10 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             new RecyclerViewHolderLayout<T>(R.layout.item_dashboard_stats, (Class<T>) DashboardStatsViewHolder.class)
     );
 
-    private final Context context;
+    private final DashboardContract.View view;
 
-    public DashboardAdapter(Context context) {
-        this.context = context;
+    public DashboardAdapter(DashboardContract.View view) {
+        this.view = view;
     }
 
     private List<Entry> entries = new ArrayList<>();
@@ -49,6 +47,10 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         notifyDataSetChanged();
     }
 
+    public void refreshCalendar() {
+        notifyItemChanged(0);
+    }
+
     @Override
     public T onCreateViewHolder(ViewGroup parent, int viewType) {
         return RecyclerViewHolder.create(dashboardViewHolderLayouts.get(viewType), parent.getContext(), parent);
@@ -56,7 +58,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
 
     @Override
     public void onBindViewHolder(T holder, int position) {
-        holder.onBind(context, entries);
+        holder.onBind(view, entries);
     }
 
     @Override
@@ -83,12 +85,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         private void setMinMaxDates(List<CalendarDay> dates) {
-            Collections.sort(dates, new Comparator<CalendarDay>() {
-                @Override
-                public int compare(CalendarDay o1, CalendarDay o2) {
-                    return o1.toString().compareTo(o2.toString());
-                }
-            });
+            Collections.sort(dates, (o1, o2) -> o1.toString().compareTo(o2.toString()));
 
             Calendar minDate = Calendar.getInstance();
             Calendar maxDate = Calendar.getInstance();
@@ -129,13 +126,13 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             }
 
             dashboardCalendarView.removeDecorators();
-            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, redColour, unstartedDays));
-            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, orangeColour, incompleteDays));
-            dashboardCalendarView.addDecorator(new ColorCircleDecorator(whiteColour, greenColour, completeDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, redColour, unstartedDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, orangeColour, incompleteDays));
+            dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, greenColour, completeDays));
         }
 
         @Override
-        public void onBind(final Context context, List<Entry> entries) {
+        public void onBind(DashboardContract.View view, List<Entry> entries) {
             Map<Entry, CalendarDay> entryDays = new HashMap<>();
 
             for (Entry entry: entries) {
@@ -145,7 +142,8 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             setMinMaxDates(new ArrayList<>(entryDays.values()));
             setDatesDecorators(entryDays);
 
-            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> AddEditEntryActivity.start(context, day));
+            dashboardCalendarView.setCurrentDate(CalendarDay.today(), true);
+            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> view.showAddEditTask(day));
         }
     }
 
@@ -157,7 +155,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(Context context, List<Entry> entries) {
+        public void onBind(DashboardContract.View view, List<Entry> entries) {
 
         }
     }
@@ -168,6 +166,6 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             super(itemView);
         }
 
-        public abstract void onBind(final Context context, List<Entry> entries);
+        public abstract void onBind(DashboardContract.View view, List<Entry> entries);
     }
 }

@@ -13,12 +13,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ColorCircleDecorator implements DayViewDecorator {
+public class ColorCircleDayViewDecorator implements DayViewDecorator {
     private final int foregroundColour;
     private final int backgroundColour;
     private final Set<CalendarDay> days;
 
-    public ColorCircleDecorator(int foregroundColour, int backgroundColour, Collection<CalendarDay> days) {
+    public ColorCircleDayViewDecorator(int foregroundColour, int backgroundColour, Collection<CalendarDay> days) {
         this.foregroundColour = foregroundColour;
         this.backgroundColour = backgroundColour;
         this.days = new HashSet<>(days);
