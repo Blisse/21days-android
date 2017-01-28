@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> extends RecyclerView.Adapter<T> {
 
     private final List<RecyclerViewHolderLayout<T>> addEditEntryViewHolderLayouts = Arrays.asList(
-            new RecyclerViewHolderLayout<T>(R.layout.item_entry_journal, (Class<T>) EntryExerciseViewHolder.class),
+            new RecyclerViewHolderLayout<T>(R.layout.item_entry_journal, (Class<T>) EntryJournalViewHolder.class),
             new RecyclerViewHolderLayout<T>(R.layout.item_entry_gratitudes, (Class<T>) EntryGratitudesViewHolder.class),
             new RecyclerViewHolderLayout<T>(R.layout.item_entry_exercise, (Class<T>) EntryExerciseViewHolder.class),
             new RecyclerViewHolderLayout<T>(R.layout.item_entry_meditation, (Class<T>) EntryMeditationViewHolder.class),
