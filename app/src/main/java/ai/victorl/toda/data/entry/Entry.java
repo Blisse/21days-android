@@ -63,7 +63,7 @@ public class Entry {
     }
 
     public Integer getExerciseComplete() {
-        return Math.min(100, (meditation.length()*100) / MIN_ENTRY_LENGTH);
+        return Math.min(100, (exercise.length()*100) / MIN_ENTRY_LENGTH);
     }
 
     public Integer getMeditationComplete() {
