@@ -38,6 +38,7 @@ ext {
     junitVersion = '4.12'
     rxjavaVersion = '1.1.8'
     rxandroidVersion = '1.2.1'
+    rxbindingVersion = '1.0.0'
     daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
     sqlbriteVersion = '0.7.0'

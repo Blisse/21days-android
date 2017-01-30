@@ -29,14 +29,15 @@ import butterknife.ButterKnife;
 public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> extends RecyclerView.Adapter<T> {
 
     private final List<RecyclerViewHolderLayout<T>> dashboardViewHolderLayouts = Arrays.asList(
+            new RecyclerViewHolderLayout<T>(R.layout.item_dashboard_info, (Class<T>) DashboardInfoViewHolder.class),
             new RecyclerViewHolderLayout<T>(R.layout.item_dashboard_calendar, (Class<T>) DashboardCalendarViewHolder.class),
             new RecyclerViewHolderLayout<T>(R.layout.item_dashboard_stats, (Class<T>) DashboardStatsViewHolder.class)
     );
 
-    private final DashboardContract.View view;
+    private final DashboardContract.Presenter presenter;
 
-    public DashboardAdapter(DashboardContract.View view) {
-        this.view = view;
+    public DashboardAdapter(DashboardContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     private List<Entry> entries = new ArrayList<>();
@@ -58,7 +59,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
 
     @Override
     public void onBindViewHolder(T holder, int position) {
-        holder.onBind(view, entries);
+        holder.onBind(presenter, entries);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         return dashboardViewHolderLayouts.size();
     }
 
-    public static class DashboardCalendarViewHolder extends DashboardViewHolder {
+    static class DashboardCalendarViewHolder extends DashboardViewHolder {
 
         @BindView(R.id.dashboard_mcv) MaterialCalendarView dashboardCalendarView;
         @BindColor(R.color.red) int redColour;
@@ -90,8 +91,8 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             Calendar minDate = Calendar.getInstance();
             Calendar maxDate = Calendar.getInstance();
             if (!dates.isEmpty()) {
-                minDate = dates.get(0).getCalendar();
-                maxDate = dates.get(dates.size() - 1).getCalendar();
+                minDate = CalendarDay.from(dates.get(0).getCalendar()).getCalendar();
+                maxDate = CalendarDay.from(dates.get(dates.size()-1).getCalendar()).getCalendar();
             }
 
             minDate.add(Calendar.MONTH, -1);
@@ -132,7 +133,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(DashboardContract.View view, List<Entry> entries) {
+        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
             Map<Entry, CalendarDay> entryDays = new HashMap<>();
 
             for (Entry entry: entries) {
@@ -143,11 +144,11 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             setDatesDecorators(entryDays);
 
             dashboardCalendarView.setCurrentDate(CalendarDay.today(), true);
-            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> view.showAddEditTask(day));
+            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> presenter.selectDay(day));
         }
     }
 
-    private static class DashboardStatsViewHolder extends DashboardViewHolder {
+    static class DashboardStatsViewHolder extends DashboardViewHolder {
 
         public DashboardStatsViewHolder(View itemView) {
             super(itemView);
@@ -155,7 +156,20 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(DashboardContract.View view, List<Entry> entries) {
+        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
+
+        }
+    }
+
+    static class DashboardInfoViewHolder extends DashboardViewHolder {
+
+        public DashboardInfoViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
 
         }
     }
@@ -166,6 +180,6 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             super(itemView);
         }
 
-        public abstract void onBind(DashboardContract.View view, List<Entry> entries);
+        public abstract void onBind(DashboardContract.Presenter presenter, List<Entry> entries);
     }
 }

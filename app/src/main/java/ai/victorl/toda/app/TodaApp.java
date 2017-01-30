@@ -6,6 +6,7 @@ import android.content.Context;
 import ai.victorl.toda.data.DaggerDataComponent;
 import ai.victorl.toda.data.DataComponent;
 import ai.victorl.toda.data.entry.source.EntryRepositoryModule;
+import ai.victorl.toda.data.settings.SettingsModule;
 import ai.victorl.toda.data.store.KeyStoreModule;
 
 public class TodaApp extends Application {
@@ -26,6 +27,7 @@ public class TodaApp extends Application {
             dataComponent = DaggerDataComponent.builder()
                     .appComponent(getAppComponent())
                     .keyStoreModule(new KeyStoreModule())
+                    .settingsModule(new SettingsModule())
                     .entryRepositoryModule(new EntryRepositoryModule())
                     .build();
         }

@@ -19,14 +19,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
-                android:src="@drawable/ic_poll_black_24dp"
+                android:src="@drawable/ic_info_white_24px"
                 android:tint="@color/white"/>
 
             <TextView
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Statistics"
+                android:text="Information"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="stats"/>
+                android:text="info"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
 

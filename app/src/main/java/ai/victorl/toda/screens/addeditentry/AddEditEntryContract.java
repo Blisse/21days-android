@@ -12,6 +12,13 @@ public interface AddEditEntryContract {
 
         void setTitle(String title);
 
+        void showChangesSaved();
+
+        void returnToDashboardAsCancelled();
+
+        void returnToDashboardAsSaved();
+
+        void returnToDashboardAsDeleted();
     }
 
     interface Presenter extends BasePresenter {
@@ -19,6 +26,10 @@ public interface AddEditEntryContract {
         void load(String entryDate);
 
         void save();
+
+        void cancel();
+
+        void delete();
 
     }
 

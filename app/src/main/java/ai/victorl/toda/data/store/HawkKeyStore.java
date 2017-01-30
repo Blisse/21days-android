@@ -7,7 +7,8 @@ import com.orhanobut.hawk.Hawk;
 public class HawkKeyStore implements LocalKeyStore {
     public HawkKeyStore(Context context) {
         if (!Hawk.isBuilt()) {
-            Hawk.init(context).build();
+            Hawk.init(context)
+                    .build();
         }
     }
 

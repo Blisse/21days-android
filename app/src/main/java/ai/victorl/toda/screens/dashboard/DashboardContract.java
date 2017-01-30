@@ -14,8 +14,13 @@ public interface DashboardContract {
 
         void showEntries(List<Entry> entries);
 
-        void showAddEditTask(CalendarDay day);
+        void goToAddEdit(CalendarDay day);
 
+        void showChangesSaved(CalendarDay day);
+
+        void showChangesCancelled(CalendarDay day);
+
+        void showEntryDeleted(CalendarDay day);
     }
 
     interface Presenter extends BasePresenter {
@@ -23,6 +28,8 @@ public interface DashboardContract {
         void load();
 
         void result(int requestCode, int resultCode);
+
+        void selectDay(CalendarDay day);
 
     }
 }

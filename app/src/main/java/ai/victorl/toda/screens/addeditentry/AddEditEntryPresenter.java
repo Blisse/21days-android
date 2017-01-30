@@ -8,7 +8,6 @@ import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.data.entry.source.EntryDataSource;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 class AddEditEntryPresenter implements AddEditEntryContract.Presenter {
@@ -24,40 +23,47 @@ class AddEditEntryPresenter implements AddEditEntryContract.Presenter {
     }
 
     @Override
-    public void start() {
+    public void subscribe() {
 
     }
 
     @Override
-    public void stop() {
+    public void unsubscribe() {
 
     }
 
     @Override
     public void load(@NonNull final String entryDate) {
         CalendarDay day = EntryDateFormatter.parse(entryDate);
-
         entryView.setTitle(EntryDateFormatter.readableFormat(day));
-
         entryDataSource.getEntry(entryDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Entry>() {
-                        @Override
-                        public void call(Entry entry) {
-                            if (entry == null) {
-                                currentEntry = new Entry(entryDate);
-                            } else {
-                                currentEntry = entry;
-                            }
+                .subscribe(entry -> {
+                    if (entry == null) {
+                        currentEntry = new Entry(entryDate);
+                    } else {
+                        currentEntry = entry;
+                    }
 
-                            entryView.showEntry(currentEntry);
-                        }
+                    entryView.showEntry(currentEntry);
                 });
     }
 
     @Override
     public void save() {
         entryDataSource.saveEntry(currentEntry);
+        entryView.showChangesSaved();
+    }
+
+    @Override
+    public void cancel() {
+        entryView.returnToDashboardAsCancelled();
+    }
+
+    @Override
+    public void delete() {
+        entryDataSource.deleteEntry(currentEntry);
+        entryView.returnToDashboardAsDeleted();
     }
 }

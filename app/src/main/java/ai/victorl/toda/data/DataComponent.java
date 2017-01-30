@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import ai.victorl.toda.app.AppComponent;
 import ai.victorl.toda.data.entry.source.EntryRepositoryModule;
+import ai.victorl.toda.data.settings.SettingsModule;
 import ai.victorl.toda.data.store.KeyStoreModule;
 import dagger.Component;
 
@@ -11,6 +12,7 @@ import dagger.Component;
 @Component(
         modules = {
                 KeyStoreModule.class,
+                SettingsModule.class,
                 EntryRepositoryModule.class,
         },
         dependencies = {
@@ -19,5 +21,6 @@ import dagger.Component;
 )
 public interface DataComponent extends
         KeyStoreModule.Graph,
+        SettingsModule.Graph,
         EntryRepositoryModule.Graph {
 }

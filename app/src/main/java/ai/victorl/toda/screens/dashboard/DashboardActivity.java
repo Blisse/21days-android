@@ -2,6 +2,8 @@ package ai.victorl.toda.screens.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View {
 
+    @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerview) RecyclerView dashboardRecyclerView;
 
@@ -47,21 +50,21 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         setSupportActionBar(toolbar);
         dashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        dashboardAdapter = new DashboardAdapter(this);
+        dashboardAdapter = new DashboardAdapter(dashboardPresenter);
         dashboardRecyclerView.setAdapter(dashboardAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dashboardPresenter.start();
+        dashboardPresenter.subscribe();
         dashboardPresenter.load();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        dashboardPresenter.stop();
+        dashboardPresenter.unsubscribe();
     }
 
     @Override
@@ -94,7 +97,22 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-    public void showAddEditTask(CalendarDay day) {
-        AddEditEntryActivity.start(this, AddEditEntryActivity.REQUEST_ADD_EDIT, day);
+    public void goToAddEdit(CalendarDay day) {
+        AddEditEntryActivity.startActivityForResult(this, AddEditEntryActivity.REQUEST_ADD_EDIT, day);
+    }
+
+    @Override
+    public void showChangesSaved(CalendarDay day) {
+        Snackbar.make(coordinatorLayout, "Entry Changes Saved", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showChangesCancelled(CalendarDay day) {
+        Snackbar.make(coordinatorLayout, "Entry Changes Cancelled", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showEntryDeleted(CalendarDay day) {
+        Snackbar.make(coordinatorLayout, "Entry Deleted", Snackbar.LENGTH_SHORT).show();
     }
 }
