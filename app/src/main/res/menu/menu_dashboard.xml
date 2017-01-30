@@ -6,11 +6,10 @@
         android:id="@+id/action_today"
         android:icon="@drawable/ic_event_white_24px"
         android:title="Go to Today"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:icon="@drawable/ic_settings_white_24px"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 </menu>

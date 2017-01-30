@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class EntryDateFormatter {
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
-    private static SimpleDateFormat prettyFormatter = new SimpleDateFormat("EEEE MMMM d, yyyy", Locale.CANADA);
+    private static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private static SimpleDateFormat prettyFormatter = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
 
     public static CalendarDay parse(@NonNull Entry entry) {
         return parse(entry.date);

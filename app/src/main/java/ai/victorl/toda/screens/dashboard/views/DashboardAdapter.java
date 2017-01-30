@@ -49,7 +49,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
     }
 
     public void refreshCalendar() {
-        notifyItemChanged(0);
+        notifyItemChanged(1);
     }
 
     @Override
