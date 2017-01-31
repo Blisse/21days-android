@@ -3,28 +3,26 @@ package ai.victorl.toda.screens.addeditentry.views;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.jakewharton.rxbinding.widget.RxTextView;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryContract;
-import ai.victorl.toda.ui.EntryChangeViewDecorator;
 import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
-import ai.victorl.toda.ui.TextWatcherAdapter;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.observers.Observers;
 
 public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> extends RecyclerView.Adapter<T> {
 
@@ -38,43 +36,12 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
 
     private final AddEditEntryContract.Presenter entryPresenter;
 
-    private Entry entry;
-
     public AddEditEntryAdapter(AddEditEntryContract.Presenter presenter) {
-        entryPresenter = presenter;
+        this.entryPresenter = presenter;
     }
 
-    public void setEntry(Entry oEntry) {
-        if (entry == null || oEntry == null) {
-            entry = oEntry;
-            notifyDataSetChanged();
-        } else {
-            if (!entry.date.equals(oEntry.date)) {
-                notifyDataSetChanged();
-            } else {
-                List<Integer> changedPositions = new ArrayList<>();
-                if (!TextUtils.equals(entry.journal, oEntry.journal)) {
-                    changedPositions.add(0);
-                }
-                if (!entry.gratitudes.equals(oEntry.gratitudes)) {
-                    changedPositions.add(1);
-                }
-                if (TextUtils.equals(entry.exercise, oEntry.exercise)) {
-                    changedPositions.add(2);
-                }
-                if (TextUtils.equals(entry.meditation, oEntry.meditation)) {
-                    changedPositions.add(3);
-                }
-                if (TextUtils.equals(entry.kindness, oEntry.kindness)) {
-                    changedPositions.add(4);
-                }
-
-                entry = oEntry;
-                for (Integer position : changedPositions) {
-                    notifyItemChanged(position);
-                }
-            }
-        }
+    public void load() {
+        notifyDataSetChanged();
     }
 
     @Override
@@ -84,7 +51,7 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
 
     @Override
     public void onBindViewHolder(EntryViewHolder holder, int position) {
-        holder.onBind(entry);
+        holder.onBind(entryPresenter);
     }
 
     @Override
@@ -94,12 +61,22 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
 
     @Override
     public int getItemCount() {
-        return entry != null ? addEditEntryViewHolderLayouts.size() : 0;
+        return addEditEntryViewHolderLayouts.size();
+    }
+
+    private static void recolourView(int status, View view, int baseColour, int oneColour, int twoColour) {
+        if (status < 20) {
+            view.setBackgroundColor(baseColour);
+        } else if (status < 100) {
+            view.setBackgroundColor(oneColour);
+        } else {
+            view.setBackgroundColor(twoColour);
+        }
     }
 
     static class EntryJournalViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.edittext) EditText journalEditText;
+        @BindView(R.id.edittext) EditText editText;
         @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryJournalViewHolder(View itemView) {
@@ -108,16 +85,18 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         }
 
         @Override
-        public void onBind(final Entry entry) {
-            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
-            journalEditText.addTextChangedListener(new TextWatcherAdapter() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    entry.journal = s.toString();
-                    viewDecorator.onEntryChanged(entry.getJournalComplete());
-                }
-            });
-            journalEditText.setText(entry.journal);
+        public void onBind(AddEditEntryContract.Presenter presenter) {
+            RxTextView.textChangeEvents(editText)
+                    .skip(1)
+                    .map(e -> e.text().toString())
+                    .subscribe(s -> {
+                        presenter.setEntryJournal(s);
+                        recolourView(Entry.journalComplete(s), header, darkGrayColour, orangeColour, greenColour);
+                    });
+
+            presenter.getEntry()
+                    .map(entry -> entry.journal)
+                    .subscribe(RxTextView.text(editText)::call);
         }
     }
 
@@ -137,33 +116,24 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         }
 
         @Override
-        public void onBind(final Entry entry) {
-            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
-            gratitudesAdapter = new EntryGratitudesAdapter(gratitudes -> {
-                entry.gratitudes = gratitudes;
-                completionTextView.setText(String.format(Locale.getDefault(), "%d/3", entry.gratitudes.size()));
-                viewDecorator.onEntryChanged(entry.getGratitudesComplete());
-            });
-            gratitudesAdapter.setGratitudes(entry.gratitudes);
+        public void onBind(AddEditEntryContract.Presenter presenter) {
+            gratitudesAdapter = new EntryGratitudesAdapter(presenter, completionTextView, addGratitudeImageView, removeGratitudeImageView,
+                    Observers.create(gratitudes -> recolourView(Entry.gratitudesComplete(gratitudes), header, darkGrayColour, orangeColour, greenColour)));
 
             gratitudesRecyclerView.setLayoutManager(new LinearLayoutManager(gratitudesRecyclerView.getContext()));
             gratitudesRecyclerView.setAdapter(gratitudesAdapter);
 
-            addGratitudeImageView.setOnClickListener(v -> {
-                gratitudesAdapter.addGratitude();
-            });
-            removeGratitudeImageView.setOnClickListener(v -> {
-                int size = gratitudesAdapter.getItemCount();
-                if ((size > 0) && TextUtils.isEmpty(entry.gratitudes.get(size - 1))) {
-                    gratitudesAdapter.removeGratitude(size - 1);
-                }
-            });
+            presenter.getEntry()
+                    .map(entry -> entry.gratitudes)
+                    .subscribe(gratitudes -> {
+                        gratitudesAdapter.load(gratitudes.size());
+                    });
         }
     }
 
     static class EntryExerciseViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.edittext) EditText exerciseEditText;
+        @BindView(R.id.edittext) EditText editText;
         @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryExerciseViewHolder(View itemView) {
@@ -172,22 +142,24 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         }
 
         @Override
-        public void onBind(final Entry entry) {
-            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
-            exerciseEditText.addTextChangedListener(new TextWatcherAdapter() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    entry.exercise = s.toString();
-                    viewDecorator.onEntryChanged(entry.getExerciseComplete());
-                }
-            });
-            exerciseEditText.setText(entry.exercise);
+        public void onBind(AddEditEntryContract.Presenter presenter) {
+            RxTextView.textChangeEvents(editText)
+                    .skip(1)
+                    .map(e -> e.text().toString())
+                    .subscribe(s -> {
+                        presenter.setEntryExercise(s);
+                        recolourView(Entry.exerciseComplete(s), header, darkGrayColour, orangeColour, greenColour);
+                    });
+
+            presenter.getEntry()
+                    .map(entry -> entry.exercise)
+                    .subscribe(RxTextView.text(editText)::call);
         }
     }
 
     static class EntryMeditationViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.edittext) EditText meditationEditText;
+        @BindView(R.id.edittext) EditText editText;
         @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryMeditationViewHolder(View itemView) {
@@ -196,22 +168,24 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         }
 
         @Override
-        public void onBind(final Entry entry) {
-            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
-            meditationEditText.addTextChangedListener(new TextWatcherAdapter() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    entry.meditation = s.toString();
-                    viewDecorator.onEntryChanged(entry.getMeditationComplete());
-                }
-            });
-            meditationEditText.setText(entry.meditation);
+        public void onBind(AddEditEntryContract.Presenter presenter) {
+            RxTextView.textChangeEvents(editText)
+                    .skip(1)
+                    .map(e -> e.text().toString())
+                    .subscribe(s -> {
+                        presenter.setEntryMeditation(s);
+                        recolourView(Entry.meditationComplete(s), header, darkGrayColour, orangeColour, greenColour);
+                    });
+
+            presenter.getEntry()
+                    .map(entry -> entry.meditation)
+                    .subscribe(RxTextView.text(editText)::call);
         }
     }
 
     static class EntryKindnessViewHolder extends EntryViewHolder {
 
-        @BindView(R.id.edittext) EditText kindnessEditText;
+        @BindView(R.id.edittext) EditText editText;
         @BindView(R.id.header_linearlayout) LinearLayoutCompat header;
 
         public EntryKindnessViewHolder(View itemView) {
@@ -220,16 +194,18 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         }
 
         @Override
-        public void onBind(final Entry entry) {
-            final EntryChangeViewDecorator viewDecorator = new EntryChangeViewDecorator(header, darkGrayColour, orangeColour, greenColour);
-            kindnessEditText.addTextChangedListener(new TextWatcherAdapter() {
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    entry.kindness = s.toString();
-                    viewDecorator.onEntryChanged(entry.getKindnessComplete());
-                }
-            });
-            kindnessEditText.setText(entry.kindness);
+        public void onBind(AddEditEntryContract.Presenter presenter) {
+            RxTextView.textChangeEvents(editText)
+                    .skip(1)
+                    .map(e -> e.text().toString())
+                    .subscribe(s -> {
+                        presenter.setEntryKindness(s);
+                        recolourView(Entry.kindnessComplete(s), header, darkGrayColour, orangeColour, greenColour);
+                    });
+
+            presenter.getEntry()
+                    .map(entry -> entry.kindness)
+                    .subscribe(RxTextView.text(editText)::call);
         }
     }
 
@@ -244,7 +220,7 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
             ButterKnife.bind(this, itemView);
         }
 
-        public abstract void onBind(Entry entry);
+        public abstract void onBind(AddEditEntryContract.Presenter presenter);
     }
 
 }

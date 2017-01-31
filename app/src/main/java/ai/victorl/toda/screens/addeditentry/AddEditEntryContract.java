@@ -1,8 +1,11 @@
 package ai.victorl.toda.screens.addeditentry;
 
+import java.util.List;
+
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.ui.BasePresenter;
 import ai.victorl.toda.ui.BaseView;
+import rx.Observable;
 
 public interface AddEditEntryContract {
 
@@ -11,6 +14,8 @@ public interface AddEditEntryContract {
         void showEntry(Entry entry);
 
         void setTitle(String title);
+
+        void updateStatus(int status);
 
         void showChangesSaved();
 
@@ -25,12 +30,31 @@ public interface AddEditEntryContract {
 
         void load(String entryDate);
 
-        void save();
+        void sync();
+
+        void save(boolean returning);
 
         void cancel();
 
         void delete();
 
+        Observable<Entry> getEntry();
+
+        void setEntryJournal(String journal);
+
+        void setEntryGratitudes(List<String> gratitudes);
+
+        void addEntryGratitude(String gratitude);
+
+        void setEntryGratitude(int index, String gratitude);
+
+        void removeEntryGratitudes(int index);
+
+        void setEntryExercise(String exercise);
+
+        void setEntryMeditation(String meditation);
+
+        void setEntryKindness(String kindness);
     }
 
 }

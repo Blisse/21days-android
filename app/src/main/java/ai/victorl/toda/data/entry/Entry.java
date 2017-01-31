@@ -3,6 +3,7 @@ package ai.victorl.toda.data.entry;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,10 @@ public class Entry {
         this(date, "", Arrays.asList("", "", ""), "", "", "");
     }
 
+    public Entry(@NonNull CalendarDay day) {
+        this(EntryDateFormatter.format(day));
+    }
+
     public Entry(@NonNull Entry entry) {
         this(entry.date, entry.journal, entry.gratitudes, entry.exercise, entry.meditation, entry.kindness);
     }
@@ -48,11 +53,11 @@ public class Entry {
         this("");
     }
 
-    public Integer getJournalComplete() {
+    public static Integer journalComplete(String journal) {
         return Math.min(100, (journal.length()*100) / MIN_ENTRY_LENGTH);
     }
 
-    public Integer getGratitudesComplete() {
+    public static Integer gratitudesComplete(List<String> gratitudes) {
         Integer gratitudeComplete = 0;
 
         for (String gratitude: gratitudes) {
@@ -62,26 +67,26 @@ public class Entry {
         return Math.min(100, Long.valueOf(Math.round(gratitudeComplete / 3.0)).intValue());
     }
 
-    public Integer getExerciseComplete() {
+    public static Integer exerciseComplete(String exercise) {
         return Math.min(100, (exercise.length()*100) / MIN_ENTRY_LENGTH);
     }
 
-    public Integer getMeditationComplete() {
+    public static Integer meditationComplete(String meditation) {
         return Math.min(100, (meditation.length()*100) / MIN_ENTRY_LENGTH);
     }
 
-    public Integer getKindnessComplete() {
+    public static Integer kindnessComplete(String kindness) {
         return Math.min(100, (kindness.length()*100) / MIN_ENTRY_LENGTH);
     }
 
-    public Integer getPercentageComplete() {
+    public static Integer complete(Entry entry) {
         Integer complete = 0;
 
-        complete += getJournalComplete();
-        complete += getGratitudesComplete();
-        complete += getExerciseComplete();
-        complete += getMeditationComplete();
-        complete += getKindnessComplete();
+        complete += journalComplete(entry.journal);
+        complete += gratitudesComplete(entry.gratitudes);
+        complete += exerciseComplete(entry.exercise);
+        complete += meditationComplete(entry.meditation);
+        complete += kindnessComplete(entry.kindness);
         complete /= 5;
 
         return complete;
@@ -135,5 +140,4 @@ public class Entry {
             throw new IllegalArgumentException(String.format(Locale.getDefault(), "No entry field with value %d exists", value));
         }
     };
-
 }

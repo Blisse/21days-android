@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import javax.inject.Inject;
@@ -22,9 +24,9 @@ import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.data.settings.TodaSettings;
 import ai.victorl.toda.screens.addeditentry.views.AddEditEntryAdapter;
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class AddEditEntryActivity extends AppCompatActivity implements AddEditEntryContract.View {
 
@@ -37,11 +39,11 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerview) RecyclerView entryRecyclerView;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
-    @OnClick(R.id.fab)
-    void onFabClick() {
-        entryPresenter.save();
-    }
+    @BindColor(R.color.green) int greenColour;
+    @BindColor(R.color.orange) int orangeColour;
+    @BindColor(R.color.darkgray) int darkGrayColour;
 
     @Inject AddEditEntryContract.Presenter entryPresenter;
     @Inject TodaSettings todaSettings;
@@ -61,9 +63,16 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
                 .inject(this);
 
         setSupportActionBar(toolbar);
-        entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        RxView.clicks(fab)
+                .subscribe(x -> {
+                    entryPresenter.save(false);
+                });
+
+        entryPresenter.load(getIntent().getStringExtra(KEY_ENTRY_DATE));
         entryAdapter = new AddEditEntryAdapter(entryPresenter);
+
+        entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         entryRecyclerView.setAdapter(entryAdapter);
     }
 
@@ -71,7 +80,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     protected void onResume() {
         super.onResume();
         entryPresenter.subscribe();
-        entryPresenter.load(getIntent().getStringExtra(KEY_ENTRY_DATE));
+        entryPresenter.sync();
     }
 
     @Override
@@ -102,7 +111,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     @Override
     public void onBackPressed() {
         if (todaSettings.shouldSaveOnBack()) {
-            entryPresenter.save();
+            entryPresenter.save(true);
             returnToDashboardAsSaved();
         } else {
             returnToDashboardAsCancelled();
@@ -111,13 +120,24 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
     @Override
     public void showEntry(Entry entry) {
-        entryAdapter.setEntry(entry);
+        entryAdapter.load();
     }
 
     @Override
     public void setTitle(String title) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
+        }
+    }
+
+    @Override
+    public void updateStatus(int status) {
+        if (status < 33) {
+            toolbar.setBackgroundColor(darkGrayColour);
+        } else if (status < 100) {
+            toolbar.setBackgroundColor(orangeColour);
+        } else {
+            toolbar.setBackgroundColor(greenColour);
         }
     }
 
