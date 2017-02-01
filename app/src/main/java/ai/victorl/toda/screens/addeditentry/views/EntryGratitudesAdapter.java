@@ -5,60 +5,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import ai.victorl.toda.R;
-import ai.victorl.toda.screens.addeditentry.AddEditEntryContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
 
 public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudesAdapter.EntryGratitudeViewHolder> {
 
-    private final AddEditEntryContract.Presenter presenter;
-    private final TextView statusTextView;
-    private final Observer<List<String>> observer;
+    private final GratitudesChangeListener listener;
+    private final List<String> gratitudes = new ArrayList<>();
 
-    private int gratitudes = 0;
-
-    public EntryGratitudesAdapter(AddEditEntryContract.Presenter presenter, TextView statusTextView, View addView, View removeView, Observer<List<String>> observer) {
-        this.presenter = presenter;
-        this.statusTextView = statusTextView;
-        this.observer = observer;
-
-        RxView.clicks(addView)
-                .subscribe((x) -> {
-                    gratitudes += 1;
-                    presenter.addEntryGratitude("");
-                    notifyItemInserted(gratitudes-1);
-                    updateStatus();
-                });
-
-        RxView.clicks(removeView)
-                .subscribe((x) -> {
-                    if (gratitudes > 0) {
-                        gratitudes -= 1;
-                        presenter.removeEntryGratitudes(gratitudes);
-                        notifyItemRemoved(gratitudes);
-                        updateStatus();
-                    }
-                });
+    public EntryGratitudesAdapter(GratitudesChangeListener listener) {
+        this.listener = listener;
     }
 
-    private void updateStatus() {
-        statusTextView.setText(String.format(Locale.getDefault(), "%d/3", gratitudes));
-    }
-
-    public void load(int gratitudes) {
-        this.gratitudes = gratitudes;
-        updateStatus();
+    public void setGratitudes(List<String> gratitudes) {
+        this.gratitudes.clear();
+        this.gratitudes.addAll(gratitudes);
         notifyDataSetChanged();
+        listener.onChangeGratitudes(gratitudes);
+    }
+
+    public void addGratitude(String gratitude) {
+        int last = gratitudes.size();
+        gratitudes.add(last, gratitude);
+        notifyItemInserted(last);
+        listener.onChangeGratitudes(gratitudes);
+    }
+
+    public void popGratitude() {
+        if (gratitudes.size() > 0) {
+            int last = gratitudes.size() - 1;
+            gratitudes.remove(last);
+            notifyItemRemoved(last);
+            listener.onChangeGratitudes(gratitudes);
+        }
     }
 
     @Override
@@ -70,12 +56,12 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
 
     @Override
     public void onBindViewHolder(EntryGratitudeViewHolder holder, int position) {
-        holder.onBind(presenter, position, observer);
+        holder.onBind(listener, gratitudes, position);
     }
 
     @Override
     public int getItemCount() {
-        return gratitudes;
+        return gratitudes.size();
     }
 
     static class EntryGratitudeViewHolder extends RecyclerView.ViewHolder {
@@ -87,19 +73,22 @@ public class EntryGratitudesAdapter extends RecyclerView.Adapter<EntryGratitudes
             ButterKnife.bind(this, itemView);
         }
 
-        void onBind(AddEditEntryContract.Presenter presenter, final int position, Observer<List<String>> observer) {
-            presenter.getEntry()
-                    .map(entry -> entry.gratitudes.get(position))
-                    .subscribe(RxTextView.text(editText)::call);
+        void onBind(GratitudesChangeListener listener, List<String> gratitudes, final int position) {
+            if (0 <= position && position < gratitudes.size()) {
+                RxTextView.text(editText)
+                        .call(gratitudes.get(position));
 
-            RxTextView.textChangeEvents(editText)
-                    .map(e -> e.text().toString())
-                    .subscribe(s -> {
-                        presenter.setEntryGratitude(position, s);
-                        presenter.getEntry()
-                                .map(entry -> entry.gratitudes)
-                                .subscribe(observer::onNext);
-                    });
+                RxTextView.textChanges(editText)
+                        .map(CharSequence::toString)
+                        .subscribe(s -> {
+                            gratitudes.set(position, s);
+                            listener.onChangeGratitudes(gratitudes);
+                        });
+            }
         }
     }
+
+    public interface GratitudesChangeListener {
+        void onChangeGratitudes(List<String> gratitudes);
+    };
 }

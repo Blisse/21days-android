@@ -30,9 +30,7 @@ public interface AddEditEntryContract {
 
         void load(String entryDate);
 
-        void sync();
-
-        void save(boolean returning);
+        void save(boolean showUi);
 
         void cancel();
 

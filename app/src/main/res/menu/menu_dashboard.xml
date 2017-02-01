@@ -5,11 +5,11 @@
     <item
         android:id="@+id/action_today"
         android:icon="@drawable/ic_event_white_24px"
-        android:title="Go to Today"
+        android:title="@string/menu_today"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings_white_24px"
-        android:title="@string/action_settings"
+        android:title="@string/menu_settings"
         app:showAsAction="ifRoom"/>
 </menu>

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import com.jakewharton.rxbinding.view.RxView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import ai.victorl.toda.R;
@@ -69,18 +71,41 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
                     entryPresenter.save(false);
                 });
 
-        entryPresenter.load(getIntent().getStringExtra(KEY_ENTRY_DATE));
-        entryAdapter = new AddEditEntryAdapter(entryPresenter);
+        entryAdapter = new AddEditEntryAdapter(new AddEditEntryAdapter.AddEditEntryListener() {
+            @Override
+            public void onChangeJournal(String journal) {
+                entryPresenter.setEntryJournal(journal);
+            }
+
+            @Override
+            public void onChangeGratitudes(List<String> gratitudes) {
+                entryPresenter.setEntryGratitudes(gratitudes);
+            }
+
+            @Override
+            public void onChangeExercise(String exercise) {
+                entryPresenter.setEntryExercise(exercise);
+            }
+
+            @Override
+            public void onChangeMeditation(String meditation) {
+                entryPresenter.setEntryMeditation(meditation);
+            }
+
+            @Override
+            public void onChangeKindness(String kindness) {
+                entryPresenter.setEntryKindness(kindness);
+            }
+        });
 
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        entryRecyclerView.setAdapter(entryAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         entryPresenter.subscribe();
-        entryPresenter.sync();
+        entryPresenter.load(getIntent().getStringExtra(KEY_ENTRY_DATE));
     }
 
     @Override
@@ -111,7 +136,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     @Override
     public void onBackPressed() {
         if (todaSettings.shouldSaveOnBack()) {
-            entryPresenter.save(true);
+            entryPresenter.save(false);
             returnToDashboardAsSaved();
         } else {
             returnToDashboardAsCancelled();
@@ -120,7 +145,8 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
     @Override
     public void showEntry(Entry entry) {
-        entryAdapter.load();
+        entryAdapter.load(entry);
+        entryRecyclerView.setAdapter(entryAdapter);
     }
 
     @Override
@@ -165,6 +191,6 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
     public static void startActivityForResult(AppCompatActivity activity, int requestCode, @NonNull CalendarDay day) {
         activity.startActivityForResult(new Intent(activity, AddEditEntryActivity.class)
-                .putExtra(KEY_ENTRY_DATE, EntryDateFormatter.format(day)), requestCode);
+                .putExtra(KEY_ENTRY_DATE, EntryDateFormatter.shortFormat(day)), requestCode);
     }
 }

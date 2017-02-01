@@ -29,7 +29,7 @@ public class EntryDateFormatter {
         return CalendarDay.from(year, month, day);
     }
 
-    public static String format(CalendarDay day) {
+    public static String shortFormat(CalendarDay day) {
         return formatter.format(day.getDate());
     }
 

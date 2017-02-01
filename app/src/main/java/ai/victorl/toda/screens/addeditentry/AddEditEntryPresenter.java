@@ -40,12 +40,8 @@ class AddEditEntryPresenter implements AddEditEntryContract.Presenter {
     public void load(@NonNull final String entryDate) {
         CalendarDay day = EntryDateFormatter.parse(entryDate);
         entryView.setTitle(EntryDateFormatter.readableFormat(day));
-        currentEntry = new Entry(day);
-    }
 
-    @Override
-    public void sync() {
-        entryDataSource.getEntry(currentEntry.date)
+        entryDataSource.getEntry(entryDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(entry -> {
@@ -59,9 +55,9 @@ class AddEditEntryPresenter implements AddEditEntryContract.Presenter {
     }
 
     @Override
-    public void save(boolean returning) {
+    public void save(boolean showUi) {
         entryDataSource.saveEntry(currentEntry);
-        if (!returning) {
+        if (showUi) {
             entryView.showChangesSaved();
         }
     }

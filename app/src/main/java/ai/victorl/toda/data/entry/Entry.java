@@ -42,7 +42,7 @@ public class Entry {
     }
 
     public Entry(@NonNull CalendarDay day) {
-        this(EntryDateFormatter.format(day));
+        this(EntryDateFormatter.shortFormat(day));
     }
 
     public Entry(@NonNull Entry entry) {

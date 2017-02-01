@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import ai.victorl.toda.R;
 import ai.victorl.toda.app.TodaApp;
 import ai.victorl.toda.data.entry.Entry;
+import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryActivity;
 import ai.victorl.toda.screens.dashboard.views.DashboardAdapter;
 import butterknife.BindView;
@@ -103,16 +104,31 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void showChangesSaved(CalendarDay day) {
-        Snackbar.make(coordinatorLayout, "Entry Changes Saved", Snackbar.LENGTH_SHORT).show();
+        StringBuilder sb = new StringBuilder();
+        if (day != null) {
+            sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
+        }
+        sb.append("Saved");
+        Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showChangesCancelled(CalendarDay day) {
-        Snackbar.make(coordinatorLayout, "Entry Changes Cancelled", Snackbar.LENGTH_SHORT).show();
+        StringBuilder sb = new StringBuilder();
+        if (day != null) {
+            sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
+        }
+        sb.append("Cancelled");
+        Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showEntryDeleted(CalendarDay day) {
-        Snackbar.make(coordinatorLayout, "Entry Deleted", Snackbar.LENGTH_SHORT).show();
+        StringBuilder sb = new StringBuilder();
+        if (day != null) {
+            sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
+        }
+        sb.append("Deleted");
+        Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 }
