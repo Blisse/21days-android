@@ -37,65 +37,25 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/stats_current_streak"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dashboard_stats_current_streak"
-                    android:textAppearance="@style/AppCardView.DashboardStatTitleTextAppearance"/>
-
-                <TextView
-                    android:id="@+id/stats_current_streak"
-                    style="@style/AppCardView.DashboardStatValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/stats_longest_streak"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dashboard_stats_longest_streak"
-                    android:textAppearance="@style/AppCardView.DashboardStatTitleTextAppearance"/>
 
-                <TextView
-                    android:id="@+id/stats_longest_streak"
-                    style="@style/AppCardView.DashboardStatValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/stats_created_completed"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dashboard_stats_days_completed"
-                    android:textAppearance="@style/AppCardView.DashboardStatTitleTextAppearance"/>
-
-                <TextView
-                    android:id="@+id/stats_created_completed"
-                    style="@style/AppCardView.DashboardStatValueTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/AppCardView.DashboardStatValueTextAppearance"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
 
         </android.support.v7.widget.LinearLayoutCompat>
 

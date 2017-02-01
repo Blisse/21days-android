@@ -70,22 +70,8 @@
         <item name="android:textSize">@dimen/calendar_description_text_size</item>
     </style>
 
-    <style name="AppCardView.DashboardStatTitleTextAppearance">
-        <item name="android:textColor">@color/darkgray</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/stat_text_size</item>
-    </style>
-
-    <style name="AppCardView.DashboardStatValueTextView">
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginBottom">0dp</item>
-        <item name="android:layout_marginStart">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
-    </style>
-
     <style name="AppCardView.DashboardStatValueTextAppearance">
-        <item name="android:textColor">@color/blue</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/darkgray</item>
         <item name="android:textSize">@dimen/stat_text_size</item>
     </style>
 

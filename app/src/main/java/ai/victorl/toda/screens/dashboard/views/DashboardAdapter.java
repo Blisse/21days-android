@@ -1,6 +1,9 @@
 package ai.victorl.toda.screens.dashboard.views;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
 import ai.victorl.toda.utils.CalendarUtil;
 import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -156,6 +160,15 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         @BindView(R.id.stats_longest_streak) TextView longestStreakTextView;
         @BindView(R.id.stats_created_completed) TextView createdCompletedRatioTextView;
 
+        @BindString(R.string.dashboard_stats_days_completed) String statsDaysCompletedString;
+        @BindString(R.string.dashboard_stats_current_streak) String statsCurrentStreakString;
+        @BindString(R.string.dashboard_stats_longest_streak) String statsLongestStreakString;
+        @BindString(R.string.dashboard_stats_day) String statsDayString;
+        @BindString(R.string.dashboard_stats_days) String statsDaysString;
+
+        @BindColor(R.color.green) int greenColour;
+        @BindColor(R.color.blue) int blueColour;
+
         public DashboardStatsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -180,8 +193,19 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
                 }
             }
 
-            currentStreakTextView.setText(String.valueOf(currentStreak));
-            longestStreakTextView.setText(String.valueOf(longestStreak));
+            currentStreakTextView.setText(new SpannableStringBuilder()
+                    .append(statsCurrentStreakString)
+                    .append(" ")
+                    .append(String.valueOf(currentStreak), new ForegroundColorSpan(blueColour), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    .append(" ")
+                    .append(currentStreak == 1 ? statsDayString : statsDaysString));
+
+            longestStreakTextView.setText(new SpannableStringBuilder()
+                    .append(statsLongestStreakString)
+                    .append(" ")
+                    .append(String.valueOf(longestStreak), new ForegroundColorSpan(blueColour), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    .append(" ")
+                    .append(longestStreak == 1 ? statsDayString : statsDaysString));
 
             int completed = 0;
             for (Entry entry: entries) {
@@ -189,7 +213,13 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
                     completed += 1;
                 }
             }
-            createdCompletedRatioTextView.setText(String.format(Locale.getDefault(), "%d/%d", completed, entries.size()));
+
+            createdCompletedRatioTextView.setText(new SpannableStringBuilder()
+                    .append(statsDaysCompletedString)
+                    .append(" ")
+                    .append(String.format(Locale.getDefault(), "%d / %d", completed, entries.size()), new ForegroundColorSpan(completed == entries.size() ? greenColour : blueColour), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    .append(" ")
+                    .append(completed == 1 ? statsDayString : statsDaysString));
         }
     }
 
