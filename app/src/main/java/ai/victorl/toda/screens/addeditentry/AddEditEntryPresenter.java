@@ -46,7 +46,7 @@ class AddEditEntryPresenter implements AddEditEntryContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(entry -> {
                     if (entry == null) {
-                        currentEntry = new Entry(currentEntry.date);
+                        currentEntry = new Entry(entryDate);
                     } else {
                         currentEntry = entry;
                     }
