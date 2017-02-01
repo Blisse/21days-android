@@ -3,6 +3,7 @@ package ai.victorl.toda.screens.dashboard.views;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ai.victorl.toda.R;
@@ -21,6 +23,7 @@ import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.ui.ColorCircleDayViewDecorator;
 import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
+import ai.victorl.toda.utils.CalendarUtil;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -149,6 +152,10 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
 
     static class DashboardStatsViewHolder extends DashboardViewHolder {
 
+        @BindView(R.id.stats_current_streak) TextView currentStreakTextView;
+        @BindView(R.id.stats_longest_streak) TextView longestStreakTextView;
+        @BindView(R.id.stats_created_completed) TextView createdCompletedRatioTextView;
+
         public DashboardStatsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -156,7 +163,33 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
 
         @Override
         public void onBind(DashboardListener listener, List<Entry> entries) {
+            List<CalendarDay> days = new ArrayList<>();
+            for (Entry entry: entries) {
+                days.add(EntryDateFormatter.parse(entry));
+            }
 
+            Collections.sort(days, (o1, o2) -> o1.toString().compareTo(o2.toString()));
+            List<List<CalendarDay>> streaks = CalendarUtil.getStreaks(days);
+
+            int longestStreak = 0;
+            int currentStreak = 0;
+            for (List<CalendarDay> streak: streaks) {
+                longestStreak = Math.max(longestStreak, streak.size());
+                if (streak.contains(CalendarDay.today())) {
+                    currentStreak = streak.size();
+                }
+            }
+
+            currentStreakTextView.setText(String.valueOf(currentStreak));
+            longestStreakTextView.setText(String.valueOf(longestStreak));
+
+            int completed = 0;
+            for (Entry entry: entries) {
+                if (Entry.complete(entry) == 100) {
+                    completed += 1;
+                }
+            }
+            createdCompletedRatioTextView.setText(String.format(Locale.getDefault(), "%d/%d", completed, entries.size()));
         }
     }
 

@@ -22,4 +22,7 @@
     <string name="popup_entry_deleted">Deleted</string>
     <string name="popup_entry_cancelled">Changes Cancelled</string>
     <string name="popup_entry_saved">Changes Saved</string>
+    <string name="dashboard_stats_days_completed">Days Completed</string>
+    <string name="dashboard_stats_longest_streak">Longest Streak</string>
+    <string name="dashboard_stats_current_streak">Current Streak</string>
 </resources>
