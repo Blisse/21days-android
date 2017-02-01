@@ -18,7 +18,6 @@ import java.util.Map;
 import ai.victorl.toda.R;
 import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
-import ai.victorl.toda.screens.dashboard.DashboardContract;
 import ai.victorl.toda.ui.ColorCircleDayViewDecorator;
 import ai.victorl.toda.ui.RecyclerViewHolder;
 import ai.victorl.toda.ui.RecyclerViewHolderLayout;
@@ -34,10 +33,10 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             new RecyclerViewHolderLayout<T>(R.layout.item_dashboard_stats, (Class<T>) DashboardStatsViewHolder.class)
     );
 
-    private final DashboardContract.Presenter presenter;
+    private final DashboardListener listener;
 
-    public DashboardAdapter(DashboardContract.Presenter presenter) {
-        this.presenter = presenter;
+    public DashboardAdapter(DashboardListener listener) {
+        this.listener = listener;
     }
 
     private List<Entry> entries = new ArrayList<>();
@@ -59,7 +58,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
 
     @Override
     public void onBindViewHolder(T holder, int position) {
-        holder.onBind(presenter, entries);
+        holder.onBind(listener, entries);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
+        public void onBind(DashboardListener listener, List<Entry> entries) {
             Map<Entry, CalendarDay> entryDays = new HashMap<>();
 
             for (Entry entry: entries) {
@@ -144,7 +143,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             setDatesDecorators(entryDays);
 
             dashboardCalendarView.setCurrentDate(CalendarDay.today(), true);
-            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> presenter.selectDay(day));
+            dashboardCalendarView.setOnDateChangedListener((widget, day, selected) -> listener.onDateSelected(day));
         }
     }
 
@@ -156,7 +155,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
+        public void onBind(DashboardListener listener, List<Entry> entries) {
 
         }
     }
@@ -169,7 +168,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         }
 
         @Override
-        public void onBind(DashboardContract.Presenter presenter, List<Entry> entries) {
+        public void onBind(DashboardListener listener, List<Entry> entries) {
 
         }
     }
@@ -180,6 +179,10 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             super(itemView);
         }
 
-        public abstract void onBind(DashboardContract.Presenter presenter, List<Entry> entries);
+        public abstract void onBind(DashboardListener listener, List<Entry> entries);
+    }
+
+    public interface DashboardListener {
+        void onDateSelected(CalendarDay day);
     }
 }

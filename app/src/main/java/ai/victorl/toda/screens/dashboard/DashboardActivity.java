@@ -51,7 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         setSupportActionBar(toolbar);
         dashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        dashboardAdapter = new DashboardAdapter(dashboardPresenter);
+        dashboardAdapter = new DashboardAdapter(day -> dashboardPresenter.selectDay(day));
         dashboardRecyclerView.setAdapter(dashboardAdapter);
     }
 
