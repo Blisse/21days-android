@@ -28,7 +28,7 @@
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Exercise"
+                android:text="@string/header_exercise"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
         </android.support.v7.widget.LinearLayoutCompat>

@@ -27,7 +27,7 @@
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Calendar"
+                android:text="@string/header_calendar"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -66,7 +66,7 @@
                     style="@style/AppCardView.CalendarDescriptionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Completed"
+                    android:text="@string/calendar_legend_completed"
                     android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
 
                 <ImageView
@@ -80,7 +80,7 @@
                     style="@style/AppCardView.CalendarDescriptionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="In Progress"
+                    android:text="@string/calendar_legend_inprogress"
                     android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
 
                 <ImageView
@@ -94,7 +94,7 @@
                     style="@style/AppCardView.CalendarDescriptionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unstarted"
+                    android:text="@string/calendar_legend_unstarted"
                     android:textAppearance="@style/AppCardView.CalendarDescriptionTextAppearance"/>
 
             </android.support.v7.widget.LinearLayoutCompat>

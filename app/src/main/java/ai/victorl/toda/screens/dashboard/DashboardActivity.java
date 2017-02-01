@@ -23,6 +23,7 @@ import ai.victorl.toda.data.entry.Entry;
 import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.screens.addeditentry.AddEditEntryActivity;
 import ai.victorl.toda.screens.dashboard.views.DashboardAdapter;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +32,10 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerview) RecyclerView dashboardRecyclerView;
+
+    @BindString(R.string.popup_entry_deleted) String popupEntryDeletedString;
+    @BindString(R.string.popup_entry_cancelled) String popupEntryChangesCancelledString;
+    @BindString(R.string.popup_entry_saved) String popupEntryChangesSavedString;
 
     @Inject DashboardContract.Presenter dashboardPresenter;
 
@@ -108,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         if (day != null) {
             sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
         }
-        sb.append("Saved");
+        sb.append(popupEntryChangesSavedString);
         Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 
@@ -118,7 +123,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         if (day != null) {
             sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
         }
-        sb.append("Cancelled");
+        sb.append(popupEntryChangesCancelledString);
         Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 
@@ -128,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         if (day != null) {
             sb.append(EntryDateFormatter.shortFormat(day)).append(" ");
         }
-        sb.append("Deleted");
+        sb.append(popupEntryDeletedString);
         Snackbar.make(coordinatorLayout, sb.toString(), Snackbar.LENGTH_SHORT).show();
     }
 }

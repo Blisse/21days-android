@@ -27,6 +27,7 @@ import ai.victorl.toda.data.entry.EntryDateFormatter;
 import ai.victorl.toda.data.settings.TodaSettings;
 import ai.victorl.toda.screens.addeditentry.views.AddEditEntryAdapter;
 import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -46,6 +47,8 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     @BindColor(R.color.green) int greenColour;
     @BindColor(R.color.orange) int orangeColour;
     @BindColor(R.color.darkgray) int darkGrayColour;
+
+    @BindString(R.string.popup_entry_saved) String popupEntryChangesSavedString;
 
     @Inject AddEditEntryContract.Presenter entryPresenter;
     @Inject TodaSettings todaSettings;
@@ -169,7 +172,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
     @Override
     public void showChangesSaved() {
-        Snackbar.make(coordinatorLayout, "Changes Saved", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, popupEntryChangesSavedString, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

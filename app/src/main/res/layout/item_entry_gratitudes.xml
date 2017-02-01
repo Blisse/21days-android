@@ -28,7 +28,7 @@
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gratitudes"
+                android:text="@string/header_gratitudes"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
             <android.support.v4.widget.Space

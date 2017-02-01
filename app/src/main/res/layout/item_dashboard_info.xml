@@ -26,7 +26,7 @@
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Information"
+                android:text="@string/header_information"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
         </android.support.v7.widget.LinearLayoutCompat>

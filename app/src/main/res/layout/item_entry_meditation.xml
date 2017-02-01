@@ -29,7 +29,7 @@
                 style="@style/AppCardView.HeaderTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Meditation"
+                android:text="@string/header_meditation"
                 android:textAppearance="@style/AppCardView.HeaderTextAppearance"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
