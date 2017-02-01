@@ -71,7 +71,7 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
         RxView.clicks(fab)
                 .subscribe(x -> {
-                    entryPresenter.save(false);
+                    entryPresenter.save(true);
                 });
 
         entryAdapter = new AddEditEntryAdapter(new AddEditEntryAdapter.AddEditEntryListener() {
