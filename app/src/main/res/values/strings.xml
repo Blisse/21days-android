@@ -27,4 +27,5 @@
     <string name="dashboard_stats_current_streak">Your current streak is</string>
     <string name="dashboard_stats_day">day</string>
     <string name="dashboard_stats_days">days</string>
+    <string name="title_activity_login">Sign in</string>
 </resources>

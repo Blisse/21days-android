@@ -43,7 +43,7 @@ ext {
     daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
     sqlbriteVersion = '0.7.0'
-    hawkVersion = '2.0.1'
     materialCalendarViewVersion = '1.4.2'
     firebaseVersion = '10.0.1'
+    rxFirebaseVersion = '0.0.15'
 }

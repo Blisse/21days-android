@@ -3,16 +3,16 @@ package ai.victorl.toda.data;
 import javax.inject.Singleton;
 
 import ai.victorl.toda.app.AppComponent;
+import ai.victorl.toda.data.auth.AuthModule;
 import ai.victorl.toda.data.entry.source.EntryRepositoryModule;
 import ai.victorl.toda.data.settings.SettingsModule;
-import ai.victorl.toda.data.store.KeyStoreModule;
 import dagger.Component;
 
 @Singleton
 @Component(
         modules = {
-                KeyStoreModule.class,
                 SettingsModule.class,
+                AuthModule.class,
                 EntryRepositoryModule.class,
         },
         dependencies = {
@@ -20,7 +20,7 @@ import dagger.Component;
         }
 )
 public interface DataComponent extends
-        KeyStoreModule.Graph,
         SettingsModule.Graph,
+        AuthModule.Graph,
         EntryRepositoryModule.Graph {
 }
