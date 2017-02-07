@@ -42,8 +42,9 @@ ext {
     rxbindingVersion = '1.0.0'
     daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
-    sqlbriteVersion = '0.7.0'
     materialCalendarViewVersion = '1.4.2'
     firebaseVersion = '10.0.1'
     rxFirebaseVersion = '0.0.15'
+    picassoVersion = '2.5.2'
+    circleImageViewVersion = '2.1.0'
 }
