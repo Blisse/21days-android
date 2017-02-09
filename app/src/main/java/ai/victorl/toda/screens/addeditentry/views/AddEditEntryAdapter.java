@@ -189,7 +189,7 @@ public class AddEditEntryAdapter<T extends AddEditEntryAdapter.EntryViewHolder> 
         @Override
         public void onBind(AddEditEntryListener listener, final Entry entry) {
             RxTextView.text(editText)
-                    .call(entry.meditation);
+                    .call(entry.kindness);
 
             RxTextView.textChanges(editText)
                     .map(CharSequence::toString)
