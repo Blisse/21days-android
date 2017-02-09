@@ -16,15 +16,15 @@ import java.util.List;
 
 import ai.victorl.toda.data.entry.Entry;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
-public class FirebaseEntryDatabase implements EntryDataSource {
+class FirebaseEntryDatabase implements EntryDataSource {
 
     private static final String KEY_USERS = "users";
     private static final String KEY_DATE = "date";
 
-    public FirebaseEntryDatabase() {
-        FirebaseDatabase firebase = FirebaseDatabase.getInstance();
-        firebase.setPersistenceEnabled(true);
+    FirebaseEntryDatabase() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     private DatabaseReference getCurrentUserDatabaseReference() {
@@ -44,7 +44,9 @@ public class FirebaseEntryDatabase implements EntryDataSource {
         if (databaseReference == null) {
             return Observable.empty();
         }
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference, DataSnapshotMapper.listOf(Entry.class));
+        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference, DataSnapshotMapper.listOf(Entry.class))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io());
     }
 
     @Override
@@ -58,6 +60,8 @@ public class FirebaseEntryDatabase implements EntryDataSource {
 
         return Observable.create(subscriber -> {
             RxFirebaseDatabase.observeSingleValueEvent(query, DataSnapshotMapper.listOf(Entry.class))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
                     .subscribe(entries -> {
                         if (!subscriber.isUnsubscribed()) {
                             int index = Collections.binarySearch(entries, entryDate, (o1, o2) -> {
@@ -84,6 +88,8 @@ public class FirebaseEntryDatabase implements EntryDataSource {
         }
 
         RxFirebaseDatabase.observeSingleValueEvent(databaseReference)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .subscribe(dataSnapshot -> {
                     boolean found = false;
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
@@ -107,7 +113,12 @@ public class FirebaseEntryDatabase implements EntryDataSource {
         if (databaseReference == null) {
             return;
         }
-        databaseReference.removeValue();
+        RxFirebaseDatabase.observeSingleValueEvent(databaseReference)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(dataSnapshot -> {
+                    dataSnapshot.getRef().removeValue();
+                });
     }
 
     @Override
@@ -118,6 +129,8 @@ public class FirebaseEntryDatabase implements EntryDataSource {
         }
 
         RxFirebaseDatabase.observeSingleValueEvent(databaseReference)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .subscribe(dataSnapshot -> {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         Entry snapshotValue = snapshot.getValue(Entry.class);
