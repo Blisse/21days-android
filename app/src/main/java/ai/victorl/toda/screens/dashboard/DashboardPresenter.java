@@ -42,7 +42,7 @@ class DashboardPresenter implements DashboardContract.Presenter {
         if (requestCode == AddEditEntryActivity.REQUEST_ADD_EDIT) {
             if (resultCode == AddEditEntryActivity.RESULT_ADD_EDIT_SUCCESS) {
                 dashboardView.showChangesSaved(selectedDay);
-            } else if (resultCode == AddEditEntryActivity.RESULT_CANCELED) {
+            } else if (resultCode == AddEditEntryActivity.RESULT_ADD_EDIT_CANCELLED) {
                 dashboardView.showChangesCancelled(selectedDay);
             } else if (resultCode == AddEditEntryActivity.RESULT_ADD_EDIT_DELETED) {
                 dashboardView.showEntryDeleted(selectedDay);
