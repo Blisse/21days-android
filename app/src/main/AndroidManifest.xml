@@ -24,8 +24,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".screens.settings.SettingsActivity">
-        </activity>
         <activity
             android:name=".screens.login.LoginActivity"
             android:label="@string/title_activity_login">
