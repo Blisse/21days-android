@@ -80,4 +80,19 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.FabMenu">
+        <item name="menu_colorNormal">@color/blue</item>
+        <item name="menu_colorPressed">@color/blue</item>
+        <item name="menu_colorRipple">@color/lightblue</item>
+        <item name="menu_labels_colorNormal">#33333333</item>
+        <item name="menu_labels_colorPressed">#33444444</item>
+        <item name="menu_labels_colorRipple">#66FFFFFF</item>
+    </style>
+
+    <style name="AppTheme.FabButton">
+        <item name="fab_colorNormal">@color/blue</item>
+        <item name="fab_colorPressed">@color/blue</item>
+        <item name="fab_colorRipple">@color/lightblue</item>
+    </style>
+
 </resources>

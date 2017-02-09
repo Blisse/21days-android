@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.jakewharton.rxbinding.view.RxView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -42,7 +40,9 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerview) RecyclerView entryRecyclerView;
-    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.fab_delete) FloatingActionButton deleteFab;
+    @BindView(R.id.fab_cancel) FloatingActionButton cancelFab;
+    @BindView(R.id.fab_save) FloatingActionButton saveFab;
 
     @BindColor(R.color.green) int greenColour;
     @BindColor(R.color.orange) int orangeColour;
@@ -69,9 +69,23 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
 
         setSupportActionBar(toolbar);
 
-        RxView.clicks(fab)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        RxView.clicks(saveFab)
                 .subscribe(x -> {
                     entryPresenter.save(true);
+                });
+
+        RxView.clicks(cancelFab)
+                .subscribe(x -> {
+                    entryPresenter.cancel();;
+                });
+
+        RxView.clicks(deleteFab)
+                .subscribe(x -> {
+                    entryPresenter.delete();
                 });
 
         entryAdapter = new AddEditEntryAdapter(new AddEditEntryAdapter.AddEditEntryListener() {
@@ -115,25 +129,6 @@ public class AddEditEntryActivity extends AppCompatActivity implements AddEditEn
     protected void onPause() {
         super.onPause();
         entryPresenter.unsubscribe();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_entry, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_cancel:
-                entryPresenter.cancel();
-                return true;
-            case R.id.action_delete:
-                entryPresenter.delete();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

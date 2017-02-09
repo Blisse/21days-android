@@ -21,6 +21,7 @@
         <activity
             android:name=".screens.addeditentry.AddEditEntryActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".screens.dashboard.DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
