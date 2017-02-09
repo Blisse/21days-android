@@ -1,5 +1,7 @@
 package ai.victorl.toda.screens.dashboard;
 
+import android.net.Uri;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public interface DashboardContract {
 
         void goToAddEdit(CalendarDay day);
 
+        void goToLogin();
+
+        void showFirebaseUser(String name, String email, Uri photo);
+
         void showChangesSaved(CalendarDay day);
 
         void showChangesCancelled(CalendarDay day);
@@ -30,6 +36,10 @@ public interface DashboardContract {
         void result(int requestCode, int resultCode);
 
         void selectDay(CalendarDay day);
+
+        void setAutosave(boolean autosave);
+
+        void signOut();
 
     }
 }

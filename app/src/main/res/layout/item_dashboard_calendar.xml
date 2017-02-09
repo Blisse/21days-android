@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 app:mcv_allowClickDaysOutsideCurrentMonth="false"
                 app:mcv_arrowColor="@color/darkgray"
+                app:mcv_headerTextAppearance="@style/AppCardView.CalendarHeaderTextAppearance"
                 app:mcv_selectionColor="@color/darkgray"
                 app:mcv_showOtherDates="decorated_disabled"/>
 

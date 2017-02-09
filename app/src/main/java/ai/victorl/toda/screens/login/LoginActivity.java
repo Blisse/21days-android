@@ -15,10 +15,15 @@ import ai.victorl.toda.R;
 import ai.victorl.toda.app.TodaApp;
 import ai.victorl.toda.data.auth.GoogleSignInClient;
 import ai.victorl.toda.screens.dashboard.DashboardActivity;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+
+    @BindString(R.string.login_firebase_failed) String loginFirebaseFailedString;
+    @BindString(R.string.login_google_error_resolved) String loginGoogleErrorResolvedString;
+    @BindString(R.string.login_google_failed) String loginGoogleFailedString;
 
     @BindView(R.id.coordinator) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -49,13 +54,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         googleSignInClient.bind(this, new GoogleSignInClient.SignInStatusListener() {
             @Override
             public void onGoogleServicesResolved() {
-                Snackbar.make(coordinatorLayout, "Google Services Error Resolved", Snackbar.LENGTH_LONG)
+                Snackbar.make(coordinatorLayout, loginGoogleErrorResolvedString, Snackbar.LENGTH_LONG)
                         .show();
             }
 
             @Override
             public void onSignInFailed() {
-                Snackbar.make(coordinatorLayout, "Google Sign In Failed", Snackbar.LENGTH_LONG)
+                Snackbar.make(coordinatorLayout, loginGoogleFailedString, Snackbar.LENGTH_LONG)
                         .show();
             }
 
@@ -86,14 +91,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void goToDashboard() {
-        Intent dashboardIntent = new Intent(this, DashboardActivity.class);
-        startActivity(dashboardIntent);
+        DashboardActivity.startActivity(this);
     }
 
     @Override
     public void showFirebaseLoginFailed() {
-        Snackbar.make(coordinatorLayout, "Firebase Sign In Failed", Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, loginFirebaseFailedString, Snackbar.LENGTH_LONG)
                 .show();
+    }
+
+    public static void startActivity(AppCompatActivity activity) {
+        Intent loginIntent = new Intent(activity, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(loginIntent);
     }
 }
 

@@ -75,4 +75,9 @@
         <item name="android:textSize">@dimen/stat_text_size</item>
     </style>
 
+    <style name="AppCardView.CalendarHeaderTextAppearance">
+        <item name="android:textColor">@color/darkgray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
