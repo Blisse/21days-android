@@ -22,6 +22,8 @@
     <string name="popup_entry_deleted">Deleted</string>
     <string name="popup_entry_cancelled">Changes Cancelled</string>
     <string name="popup_entry_saved">Changes Saved</string>
+    <string name="popup_today">Go to Today</string>
+
     <string name="dashboard_stats_days_completed">In all, you have completed</string>
     <string name="dashboard_stats_longest_streak">Your longest streak</string>
     <string name="dashboard_stats_current_streak">Your current streak is</string>

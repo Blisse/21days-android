@@ -6,8 +6,11 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -54,10 +57,6 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         notifyDataSetChanged();
     }
 
-    public void refreshCalendar() {
-        notifyItemChanged(1);
-    }
-
     @Override
     public T onCreateViewHolder(ViewGroup parent, int viewType) {
         return RecyclerViewHolder.create(dashboardViewHolderLayouts.get(viewType), parent.getContext(), parent);
@@ -81,6 +80,11 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
     static class DashboardCalendarViewHolder extends DashboardViewHolder {
 
         @BindView(R.id.dashboard_mcv) MaterialCalendarView dashboardCalendarView;
+        @BindView(R.id.today_imageview) ImageView goToTodayImageView;
+
+        @BindString(R.string.popup_today) String popupTodayString;
+
+        @BindColor(R.color.darkgray) int darkGrayColour;
         @BindColor(R.color.red) int redColour;
         @BindColor(R.color.orange) int orangeColour;
         @BindColor(R.color.green) int greenColour;
@@ -89,6 +93,16 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
         public DashboardCalendarViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            RxView.clicks(goToTodayImageView)
+                    .subscribe(aVoid -> {
+                        dashboardCalendarView.setCurrentDate(CalendarDay.today(), true);
+                    });
+            RxView.longClicks(goToTodayImageView)
+                    .subscribe(aVoid -> {
+                        Toast.makeText(goToTodayImageView.getContext(), popupTodayString, Toast.LENGTH_SHORT)
+                                .show();
+                    });
         }
 
         private void setMinMaxDates(List<CalendarDay> dates) {
@@ -122,7 +136,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
                 long percentageComplete = Entry.complete(entryDay.getKey());
                 CalendarDay day = entryDay.getValue();
                 if (day != null) {
-                    if (percentageComplete < 20) {
+                    if (percentageComplete < 33) {
                         unstartedDays.add(day);
                     } else if (percentageComplete < 100) {
                         incompleteDays.add(day);
@@ -133,6 +147,7 @@ public class DashboardAdapter<T extends DashboardAdapter.DashboardViewHolder> ex
             }
 
             dashboardCalendarView.removeDecorators();
+            dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, darkGrayColour, Collections.singleton(CalendarDay.today())));
             dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, redColour, unstartedDays));
             dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, orangeColour, incompleteDays));
             dashboardCalendarView.addDecorator(new ColorCircleDayViewDecorator(whiteColour, greenColour, completeDays));

@@ -74,9 +74,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
     }
 
     @Override
