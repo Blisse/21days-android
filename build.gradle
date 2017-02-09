@@ -47,4 +47,5 @@ ext {
     rxFirebaseVersion = '0.0.15'
     picassoVersion = '2.5.2'
     circleImageViewVersion = '2.1.0'
+    fabVersion = '1.6.4'
 }
