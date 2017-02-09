@@ -5,6 +5,7 @@ import android.content.Context;
 
 import ai.victorl.toda.data.DaggerDataComponent;
 import ai.victorl.toda.data.DataComponent;
+import ai.victorl.toda.data.auth.AuthModule;
 import ai.victorl.toda.data.entry.source.EntryRepositoryModule;
 import ai.victorl.toda.data.settings.SettingsModule;
 
@@ -25,6 +26,7 @@ public class TodaApp extends Application {
         if (dataComponent == null) {
             dataComponent = DaggerDataComponent.builder()
                     .appComponent(getAppComponent())
+                    .authModule(new AuthModule())
                     .settingsModule(new SettingsModule())
                     .entryRepositoryModule(new EntryRepositoryModule())
                     .build();
